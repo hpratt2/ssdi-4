@@ -1,0 +1,59 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>WineVault</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+	<img id="logo" src="img/logo.svg">
+</header>
+
+<section id="winelist" data-ng-app="index" data-ng-controller="indexCtrl">
+	<section id="filters">
+		<div id="sort">
+			<label for="sortfilter">Sort by</label>
+			<select id="sortfilter"
+			        data-ng-model="sortby" 
+			        data-ng-init="sortby = sortOptions[0]"
+			        data-ng-options="option.name for option in sortOptions">
+			</select>
+		</div>
+	</section>
+	<section id="wine-container">
+		<div class="wine" data-ng-repeat="wine in wines | orderBy:[sortby.value,'name']">
+			<div class="wine-bottle-container">
+				<img class="winebottle" src="img/wine_bottle.svg">
+			</div>
+			<div class="wine-info-container">
+				<div class="wine-info-left">
+					<div class="winename">
+						{{ wine.name }}
+					</div>
+					<div class="winecountry">
+						{{ wine.country || "Unknown" }}
+					</div>
+				</div>
+				<div class="wine-info-right">
+					<div class="winerating">
+						<span class="fieldname">Avg. Rating</br></span>
+						{{ wine.avgRating }}
+					</div>
+					<div class="wineprice">
+						<span class="fieldname">Price</br></span>
+						{{ wine.priceLow == wine.priceHigh ? 
+						(wine.priceLow == 0 ? "Unknown" : "$" + wine.priceLow) : 
+						("$" + wine.priceLow + " - $" + wine.priceHigh) }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</section>
+
+<script src="lib/angular/angular.js"></script>
+<script src="js/controller.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,210 @@
+/* FONTS
+   .eot       --> IE9
+   .eot#iefix --> IE6-IE8
+   .woff2     --> Latest browsers
+   .woff	  --> Fairly recent browsers
+   .ttf       --> Safari, Android, iOS
+   .svg       --> Legacy iOS
+*/
+
+@font-face{
+	font-family: "DancingScript-Bold";
+	src: url('fonts/dancingscript-bold.eot');
+	src: url('fonts/dancingscript-bold.eot#iefix') format('embedded-opentype'),
+		url('fonts/dancingscript-bold.woff') format('woff'),
+	    url('fonts/dancingscript-bold.woff2') format('woff2'),
+	    url('fonts/dancingscript-bold.ttf') format('truetype'),
+	    url('.svg#dancingscript_bold') format('svg')
+}
+
+@font-face{
+	font-family: "DancingScript-Regular";
+	src: url('dancingscript-regular.eot');
+	src: url('fonts/dancingscript-regular.eot#iefix') format('embedded-opentype'),
+		url('fonts/dancingscript-regular.woff') format('woff'),
+	    url('fonts/dancingscript-regular.woff2') format('woff2'),
+	    url('fonts/dancingscript-regular.ttf') format('truetype'),
+	    url('.svg#dancingscript_regular') format('svg')
+}
+
+@font-face{
+	font-family: "Lato-Bold";
+	src: url('fonts/lato-bold.eot');
+	src: url('fonts/lato-bold.eot#iefix') format('embedded-opentype'),
+		url('fonts/lato-bold.woff') format('woff'),
+	    url('fonts/lato-bold.woff2') format('woff2'),
+	    url('fonts/lato-bold.ttf') format('truetype'),
+	    url('.svg#lato_bold') format('svg')
+}
+
+@font-face{
+	font-family: "Lato-Heavy";
+	src: url('fonts/lato-heavy.eot');
+	src: url('fonts/lato-heavy.eot#iefix') format('embedded-opentype'),
+		url('fonts/lato-heavy.woff') format('woff'),
+	    url('fonts/lato-heavy.woff2') format('woff2'),
+	    url('fonts/lato-heavy.ttf') format('truetype'),
+	    url('.svg#lato_heavy') format('svg')
+}
+
+@font-face{
+	font-family: "Lato-Regular";
+	src: url('fonts/lato-regular.eot');
+	src: url('fonts/lato-regular.eot#iefix') format('embedded-opentype'),
+		url('fonts/lato-regular.woff') format('woff'),
+	    url('fonts/lato-regular.woff2') format('woff2'),
+	    url('fonts/lato-regular.ttf') format('truetype'),
+	    url('.svg#lato_regular') format('svg')
+}
+
+@font-face{
+	font-family: "Lato-Semibold";
+	src: url('fonts/lato-semibold.eot');
+	src: url('fonts/lato-semibold.eot#iefix') format('embedded-opentype'),
+		url('fonts/lato-semibold.woff') format('woff'),
+	    url('fonts/lato-semibold.woff2') format('woff2'),
+	    url('fonts/lato-semibold.ttf') format('truetype'),
+	    url('.svg#lato_semibold') format('svg')
+}
+
+* {
+	margin: 0;
+	border: 0;
+	padding: 0;
+	font-family: "Lato-Regular";
+	font-size: 1em;
+}
+
+body {
+	min-width: 25em;
+	padding: 2em 8em;
+	background-color: #fbfbfb;
+	color: #19171c;
+}
+
+header {
+	margin: 0 0 4em 0;
+}
+
+#logo {
+	margin: 0 1em;
+	width: 25em;
+}
+
+
+#winelist {
+	display: inline-flex;
+	flex-flow: column nowrap;
+}
+
+#filters {
+	font-size: 0.8em;
+	padding: 1em;
+  	display: inline-flex;
+  	flex-flow: row nowrap;
+  	justify-content: flex-end;
+}
+
+#filters > div > label {
+	margin-right: 0.5em;
+	font-family: "Lato-Bold";
+}
+
+#sort {
+  	flex: 1 0 30em;
+  	text-align: right;
+}
+
+select {
+	height: 2em;
+	border-radius: 3px;
+	border: 1px solid #eee;
+}
+
+#wine-container {
+	min-width: 27em;
+  	display: inline-flex;
+  	flex-flow: row wrap;
+  	justify-content: space-evenly;
+  	align-items: flex-start;
+}
+
+.wine {
+  	background-color: #e7e7e7;
+  	margin: 1em;
+  	padding: 1em;
+  	display: flex;
+  	flex-flow: row nowrap;
+  	justify-content: space-between;
+  	flex: 1 0 25em;
+}
+
+.wine-bottle-container {
+	margin-right: 0.75em;
+	justify-content: flex-start;
+	flex-grow: 0;
+}
+
+
+.wine-info-container {
+	flex-grow: 1;
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.wine-info-left {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	flex-grow: 2;
+}
+
+.wine-info-right {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	flex: 1 0 5em;
+}
+
+.winebottle {
+  	height: 6em;
+}
+
+.fieldname {
+	font-family: "Lato-Heavy";
+}
+
+.winename {
+  	font-family: "DancingScript-Bold";
+  	font-size: 1.5em;
+}
+
+.winerating {
+  	text-align: right;
+  	font-size: 0.8em;
+}
+
+.winecountry {
+	margin-top: 0.5em;
+	font-family: "Lato-Semibold";
+	font-size: 0.8em;
+}
+
+.wineprice {
+  	text-align: right;
+  	font-size: 0.8em;
+}
+
+/* SMALLER SCREEN SIZES */
+@media only screen and (max-width: 600px){
+	header {
+		margin: 0 0 2em 0;
+	}
+	body {
+		padding: 2em 0.5em;
+	}
+	.wine {
+		margin: 0.5em;
+		padding: 0.5em;
+	}
+}
