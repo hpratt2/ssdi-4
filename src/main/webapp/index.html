@@ -12,6 +12,19 @@
 
 <section id="winelist" data-ng-app="index" data-ng-controller="indexCtrl">
 	<section id="filters">
+		<div id="filter">
+			<table>
+				<tr>
+					<td> Minimum Rating: <input data-ng-model="minRating" type="number" placeholder="Min Rating"><td>
+					<td> Minimum Rating: <input data-ng-model="maxRating" type="number" placeholder="Max Rating"><td>
+				<tr>
+				<tr data-ng-repeat="wine in wines | myfilter:minRating:maxRating">
+                    <td>{{order.minRating}}</td>
+                    <td>{{order.maxRating}}</td>
+                </tr>
+				
+			</table>
+		</div>
 		<div id="sort">
 			<label for="sortfilter">Sort by</label>
 			<select id="sortfilter"
