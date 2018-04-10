@@ -3,4 +3,4 @@
 ## Installing this repository
 
 ### Recommended tools
-* Cmder[url=http://cmder.net/]
+* [Cmder](url=http://cmder.net/)
