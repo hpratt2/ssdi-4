@@ -5,13 +5,12 @@ import java.util.List;
 import winevault.dao.IWineDAO;
 import winevault.dao.WineDAO;
 import winevault.model.IWine;
-import winevault.util.ConnectionData;
+import winevault.util.*;
 
-public class WineListService {
-	private IWineDAO dao;
+public class WineListService implements IWineListService{
+	private IWineDAO dao = new WineDAO(new ConnectionDataTestSmall());
 	
 	public List<IWine> getWineList(){
-		dao = new WineDAO(new ConnectionData());
 		return dao.getWineList();
 	}
 }

@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS winevaultdb;
+DROP DATABASE IF EXISTS winevaultdbtest;
 
-CREATE DATABASE winevaultdb CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE winevaultdb;
+CREATE DATABASE winevaultdbtest CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE winevaultdbtest;
 
 
 DROP TABLE IF EXISTS wines;
@@ -39,7 +39,7 @@ CREATE TABLE reviews (
     region VARCHAR(100) DEFAULT NULL,
     subregion VARCHAR(100) DEFAULT NULL,
     winery VARCHAR(200) DEFAULT NULL,
-    vineyard VARCHAR(200) DEFAULT NULL,
+    designation VARCHAR(200) DEFAULT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (wid) REFERENCES wines(id),
     FOREIGN KEY (uid) REFERENCES users(id)

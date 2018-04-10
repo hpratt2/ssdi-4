@@ -10,10 +10,12 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import winevault.model.IWine;
-import winevault.service.WineListService;
+import winevault.service.*;
 
 @Path("/")
 public class IndexController {
+	private static IWineListService wls = new WineListService();
+	
 	@Context
 	ServletContext sc;
 	
@@ -21,7 +23,6 @@ public class IndexController {
 	@Path("/winelist")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<IWine> getWineList(){
-		WineListService service = new WineListService();
-		return service.getWineList();
+		return wls.getWineList();
 	}
 }
