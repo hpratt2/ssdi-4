@@ -84,7 +84,7 @@ body {
 	flex-flow: column nowrap;
 }
 
-label {
+label, #filter-label {
 	margin-right: 0.5em;
 	font-family: "Lato-Bold";
 }
@@ -125,9 +125,9 @@ header > #logo {
 #filter-sort-container {
 	font-size: 0.8em;
 	padding: 1em;
-  display: inline-flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
 }
 
 #filter-menu-container {
@@ -183,14 +183,26 @@ header > #logo {
 	cursor: pointer;
 }
 
+#res-per-page-container {
+	display: flex;
+	align-items: center;
+}
+
+.paginate {
+	padding: 1em;
+	display:flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+
 #winelist {
 	display: inline-flex;
 	flex-flow: column nowrap;
 }
 
 #sort-container {
-  	flex: 1 0 30em;
-  	text-align: right;
+  	display: flex;
+  	align-items: center;
 }
 
 #wine-container {

@@ -8,7 +8,7 @@ import winevault.model.IWine;
 import winevault.util.*;
 
 public class WineListService implements IWineListService{
-	private IWineDAO dao = new WineDAO(new ConnectionDataTestSmall());
+	private IWineDAO dao = new WineDAO(new ConnectionDataTestLarge());
 	
 	public List<IWine> getWineList(){
 		return dao.getWineList();

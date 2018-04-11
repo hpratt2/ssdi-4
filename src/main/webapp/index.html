@@ -19,14 +19,7 @@
 				<div id="filter-label">Filter Results</div>
 			</div>
 		</div>
-		<div id="sort-container">
-			<label for="sortfilter">Sort by</label>
-			<select id="sortfilter"
-			        data-ng-model="sortby" 
-			        data-ng-init="sortby = sortOptions[0]"
-			        data-ng-options="option.name for option in sortOptions">
-			</select>
-		</div>
+		
 		<div id="filter-menu-dropdown">
 			<div class="filter-option-container">
 				<label for="country-filter">Country</label>
@@ -50,13 +43,42 @@
 					type="number" min="{{minRating}}" max="100"
 					placeholder="{{maxAvgR}}">
 			</div>
-			<div id="filter-menu-close">
+			<div id="filter-menu-close" data-ng-click="currentPage=0">
 				Apply and Close
 			</div>
 		</div>
+		
+		<div id="sort-container">
+			<label for="sortfilter">Sort by</label>
+			<select id="sortfilter"
+			        data-ng-model="sortby" 
+			        data-ng-init="sortby = sortOptions[0]"
+			        data-ng-options="option.name for option in sortOptions">
+			</select>
+		</div>
+		
+		<div id="res-per-page-container">
+			<label for="rpp-filter">Results per page</label>
+			<select id="rpp-filter"
+					data-ng-model="rpp"
+					data-ng-init="rpp = rppOptions[0]"
+					data-ng-options="option for option in rppOptions">
+			</select>
+		</div>
+
 	</section>
+	
+	<section class="paginate">
+		<button data-ng-disabled="currentPage == 0" data-ng-click="currentPage=currentPage-1">
+			Previous
+		</button>
+		<button data-ng-disabled="currentPage >= getData().length/rpp-1" data-ng-click="currentPage=currentPage+1">
+			Next
+		</button>
+	</section>
+	
 	<section id="wine-container">
-		<div class="wine" data-ng-repeat="wine in wines | orderBy:[sortby.value,'name'] | filter:{country:countryf.value} | ratingFilter:minRating:maxRating">
+		<div class="wine" data-ng-repeat="wine in wines | orderBy:[sortby.value,'name'] | filter:{country:countryf.value} | ratingFilter:minRating:maxRating | startFrom:currentPage*rpp | limitTo:rpp">
 			<div class="wine-bottle-container">
 				<img class="winebottle" src="img/wine_bottle.svg">
 			</div>
@@ -83,6 +105,20 @@
 				</div>
 			</div>
 		</div>
+	</section>
+	<!-- 
+	<input type="number" style="display:none"
+			data-ng-model="numResults"
+			placeholder="{{(wine in wines | filter:{country:countryf.value} | ratingFilter:minRating:maxRating).length}}"
+			data-ng-value="{{(wines | filter:{country:countryf.value} | ratingFilter:minRating:maxRating).length}}">
+	-->
+	<section class="paginate">
+		<button data-ng-disabled="currentPage == 0" data-ng-click="currentPage=currentPage-1">
+			Previous
+		</button>
+		<button data-ng-disabled="false" data-ng-click="currentPage=currentPage+1">
+			Next
+		</button>
 	</section>
 </section>
 

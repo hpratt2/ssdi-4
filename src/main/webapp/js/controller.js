@@ -1,5 +1,5 @@
 var app = angular.module('index',[]);
-app.controller('indexCtrl',function($scope,$http){
+app.controller('indexCtrl',function($scope,$filter,$http){
 	$scope.sortOptions = [
 		{name:'Avg. Rating', value:'-avgRating'},
 		{name:'Name: A - Z', value:'name'},
@@ -7,6 +7,7 @@ app.controller('indexCtrl',function($scope,$http){
 		{name:'Price: Low to High', value:'priceLow'},
 		{name:'Price: High to Low', value:'-priceHigh'}
 	];
+	$scope.rppOptions = [25,50,100];
 	$http.get('rest/winelist').then(function(response){
 		$scope.status = response.status;
 		$scope.wines = response.data;
@@ -15,6 +16,7 @@ app.controller('indexCtrl',function($scope,$http){
 		$scope.maxRating = 0;
 		
 		for(let obj of $scope.wines){
+			if(obj.country == null) continue;
 			if(!existsInSet($scope.countryOptions,'name',obj.country)){
 				$scope.countryOptions.push({name:obj.country,value:obj.country});
 			}
@@ -28,7 +30,13 @@ app.controller('indexCtrl',function($scope,$http){
 			else return 0;
 		});
 		$scope.countryOptions.unshift({name:"Any",value:""});
+		$scope.countryOptions.push({name:"[Unknown]",value:null});
 	});
+	
+	$scope.currentPage = 0;
+	$scope.rpp = 25;
+	$scope.numPages = Math.ceil($scope.numResults / $scope.rpp);
+	
 });
 
 app.filter("ratingFilter", function($filter){
@@ -46,6 +54,16 @@ app.filter("ratingFilter", function($filter){
 		return results;
 	}
 });
+
+app.filter('startFrom',function(){
+	return function(input,start){
+		if(input){
+			start = +start;
+			return input.slice(start);
+		}
+	}
+})
+
 
 function existsInSet(set,fieldname,value){
 	return set.some(function(item){
