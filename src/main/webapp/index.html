@@ -3,6 +3,7 @@
 	<meta charset="utf-8">
 	<title>WineVault</title>
 	<link rel="stylesheet" href="css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 
@@ -11,8 +12,14 @@
 </header>
 
 <section id="winelist" data-ng-app="index" data-ng-controller="indexCtrl">
-	<section id="filters">
-		<div id="sort">
+	<section id="filter-sort-container">
+		<div id="filter-menu-container">
+			<div id="filter-menu-toggle">
+				<img id="filter-icon" src="img/filter-solid.svg">
+				<div id="filter-label">Filter Results</div>
+			</div>
+		</div>
+		<div id="sort-container">
 			<label for="sortfilter">Sort by</label>
 			<select id="sortfilter"
 			        data-ng-model="sortby" 
@@ -20,9 +27,36 @@
 			        data-ng-options="option.name for option in sortOptions">
 			</select>
 		</div>
+		<div id="filter-menu-dropdown">
+			<div class="filter-option-container">
+				<label for="country-filter">Country</label>
+				<select id="country-filter"
+						data-ng-model="countryf"
+						data-ng-init="countryf = countryOptions[0]"
+						data-ng-options="option.name for option in countryOptions">
+				</select>
+			</div>
+			<div class="filter-option-container">
+				<label for="rating-min">Min Rating</label>
+				<input id="rating-min"
+						data-ng-model="minRating" 
+						type="number" min="0" max="{{maxRating}}"
+						placeholder="{{minAvgR}}">
+			</div>
+			<div class="filter-option-container">
+				<label for="rating-max">Max Rating</label>
+				<input id="rating-max"
+					data-ng-model="maxRating"
+					type="number" min="{{minRating}}" max="100"
+					placeholder="{{maxAvgR}}">
+			</div>
+			<div id="filter-menu-close">
+				Apply and Close
+			</div>
+		</div>
 	</section>
 	<section id="wine-container">
-		<div class="wine" data-ng-repeat="wine in wines | orderBy:[sortby.value,'name']">
+		<div class="wine" data-ng-repeat="wine in wines | orderBy:[sortby.value,'name'] | filter:{country:countryf.value} | ratingFilter:minRating:maxRating">
 			<div class="wine-bottle-container">
 				<img class="winebottle" src="img/wine_bottle.svg">
 			</div>
@@ -52,8 +86,11 @@
 	</section>
 </section>
 
+
 <script src="lib/angular/angular.js"></script>
 <script src="js/controller.js"></script>
+<script src="js/filtermenu.js"></script>
+
 
 </body>
 </html>

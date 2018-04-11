@@ -80,45 +80,117 @@ body {
 	padding: 2em 8em;
 	background-color: #fbfbfb;
 	color: #19171c;
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+label {
+	margin-right: 0.5em;
+	font-family: "Lato-Bold";
+}
+
+.filter-option-container label {
+	display: inline-block;
+	min-width: 6em;
+}
+
+.filter-option-container select {
+	display: inline-block;
+	width: 8em !important;
+}
+
+.filter-option-container input {
+	display: inline-block;
+	width: 8em !important;
+}
+
+select, input {
+	height: 2.5em;
+	border-radius: 3px;
+	border: 1px solid #eee;
+	padding: 0.5em;
+	background-color: #fefefe;
+	overflow: auto;
 }
 
 header {
 	margin: 0 0 4em 0;
 }
 
-#logo {
+header > #logo {
 	margin: 0 1em;
 	width: 25em;
 }
 
+#filter-sort-container {
+	font-size: 0.8em;
+	padding: 1em;
+  display: inline-flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+
+#filter-menu-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  position: relative;
+}
+
+#filter-menu-toggle {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-end;
+}
+
+#filter-menu-toggle:hover {
+  cursor: pointer;
+}
+
+#filter-icon {
+  margin-right: 0.5em;
+  height: 1em;
+  fill: black;
+}
+
+#filter-menu-dropdown {
+  margin-top: 2.5em;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1.5em;
+  background-color: #fefefe;
+  display: none;
+  z-index: 1;
+  position: absolute;
+}
+
+.filter-option-container {
+	margin: 0.5em 0;
+}
+
+
+#filter-menu-close {
+	font-family: 'Lato-Semibold';
+	line-height: 2em;
+	vertical-align: middle;
+	text-align: center;
+	height: 2em;
+	background-color: #c7c7ed;
+}
+
+#filter-menu-close:hover {
+	background-color: #babadf;
+	cursor: pointer;
+}
 
 #winelist {
 	display: inline-flex;
 	flex-flow: column nowrap;
 }
 
-#filters {
-	font-size: 0.8em;
-	padding: 1em;
-  	display: inline-flex;
-  	flex-flow: row nowrap;
-  	justify-content: flex-end;
-}
-
-#filters > div > label {
-	margin-right: 0.5em;
-	font-family: "Lato-Bold";
-}
-
-#sort {
+#sort-container {
   	flex: 1 0 30em;
   	text-align: right;
-}
-
-select {
-	height: 2em;
-	border-radius: 3px;
-	border: 1px solid #eee;
 }
 
 #wine-container {
