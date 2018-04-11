@@ -35,7 +35,7 @@ app.controller('indexCtrl',function($scope,$filter,$http){
 	
 	$scope.currentPage = 0;
 	$scope.rpp = 25;
-	$scope.numPages = Math.ceil($scope.numResults / $scope.rpp);
+	$scope.numPages = 1;
 	
 });
 
@@ -64,6 +64,12 @@ app.filter('startFrom',function(){
 	}
 })
 
+app.filter('ceiling', function(){
+	return function(value){
+		if(isNaN(value)){ return 1; }
+		return Math.ceil(value);
+	}
+});
 
 function existsInSet(set,fieldname,value){
 	return set.some(function(item){

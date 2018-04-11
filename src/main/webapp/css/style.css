@@ -84,6 +84,20 @@ body {
 	flex-flow: column nowrap;
 }
 
+button {
+	margin: 0 1em;
+	padding: 0.25em;
+	width: 6em;
+	background-color: #eee;
+	border: 1px solid #e7e7e7;
+	border-radius: 3px;
+}
+
+button:hover:enabled{
+	cursor:pointer;
+	background-color: #e7e7e7;
+}
+
 label, #filter-label {
 	margin-right: 0.5em;
 	font-family: "Lato-Bold";
@@ -193,6 +207,7 @@ header > #logo {
 	display:flex;
 	flex-flow: row nowrap;
 	justify-content: center;
+	align-items: center;
 }
 
 #winelist {
