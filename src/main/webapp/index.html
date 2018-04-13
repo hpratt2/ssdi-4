@@ -62,7 +62,8 @@
 			<select id="rpp-filter"
 					data-ng-model="rpp"
 					data-ng-init="rpp = rppOptions[0]"
-					data-ng-options="option for option in rppOptions">
+					data-ng-options="option for option in rppOptions"
+					data-ng-change="currentPage=0">
 			</select>
 		</div>
 
@@ -81,7 +82,7 @@
 	</section>
 	
 	<section id="wine-container">
-		<div class="wine" data-ng-repeat="wine in filtered = (wines | filter:{country:countryf.value} | ratingFilter:minRating:maxRating) | orderBy:[sortby.value,'name'] | startFrom:currentPage*rpp | limitTo:rpp">
+		<div class="wine" data-ng-repeat="wine in filtered = (wines | countryFilter:countryf.value | ratingFilter:minRating:maxRating) | orderBy:[sortby.value,'name'] | startFrom:currentPage*rpp | limitTo:rpp">
 			<div class="wine-bottle-container">
 				<img class="winebottle" src="img/wine_bottle.svg">
 			</div>

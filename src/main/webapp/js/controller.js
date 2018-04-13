@@ -49,7 +49,23 @@ app.filter("ratingFilter", function($filter){
 		angular.forEach(wines, function(wine){
 			if(wine.avgRating >= minRating && wine.avgRating <= maxRating){
 				results.push(wine);
-			};
+			}
+		});
+		return results;
+	}
+});
+
+app.filter('countryFilter', function(){
+	return function(wines, country){
+		if(!angular.isDefined(country) || (country != null && country.length == 0)){
+			return wines;
+		}
+		
+		var results = [];
+		angular.forEach(wines, function(wine){
+			if(wine.country === country){
+				results.push(wine);
+			}
 		});
 		return results;
 	}
