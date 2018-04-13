@@ -10,7 +10,7 @@ public class WineTest {
 	Wine wineTest = new Wine(1,"N","C",10.0,1,2);
 	
 	@Test
-	void testWine() {
+	public void testWine() {
 		Wine wineTest = new Wine(1,"N","C",10.0,1,2);
 		assertEquals(1,wineTest.getID());
 		assertEquals("N",wineTest.getName());
@@ -21,61 +21,61 @@ public class WineTest {
 	}
 	
 	@Test
-	void testGetID() {
+	public void testGetID() {
 		assertEquals(1, wineTest.getID());
 	}
 	
 	@Test
-	void testGetName() {
+	public void testGetName() {
 		assertEquals("N", wineTest.getName());
 	}
 	
 	@Test
-	void testSetName() {
+	public void testSetName() {
 		wineTest.setName("name");
 		assertEquals("name", wineTest.getName());
 	}
 	
 	@Test
-	void testGetCountry() {
+	public void testGetCountry() {
 		assertEquals("C", wineTest.getCountry());
 	}
 	
 	@Test
-	void testSetCountry() {
+	public void testSetCountry() {
 		wineTest.setCountry("US");
 		assertEquals("US", wineTest.getCountry());
 	}
 	
 	@Test
-	void testGetAvgRating() {
+	public void testGetAvgRating() {
 		assertEquals(10.0, wineTest.getAvgRating(), EPS);
 	}
 	
 	@Test
-	void testSetAvgRating() {
+	public void testSetAvgRating() {
 		wineTest.setAvgRating(5.0);
 		assertEquals(5.0, wineTest.getAvgRating(), EPS);
 	}
 	
 	@Test
-	void testGetPriceLow() {
+	public void testGetPriceLow() {
 		assertEquals(1, wineTest.getPriceLow(), EPS);
 	}
 	
 	@Test
-	void testSetPriceLow() {
+	public void testSetPriceLow() {
 		wineTest.setPriceLow(5.5);
 		assertEquals(5.5, wineTest.getPriceLow(), EPS);
 	}
 	
 	@Test
-	void testGetPriceHigh() {
+	public void testGetPriceHigh() {
 		assertEquals(2, wineTest.getPriceHigh(), EPS);
 	}
 	
 	@Test
-	void testSetPriceHigh() {
+	public void testSetPriceHigh() {
 		wineTest.setPriceHigh(6.5);
 		assertEquals(6.5, wineTest.getPriceHigh(), EPS);
 	}

@@ -21,7 +21,7 @@ public class WineListServiceTest {
 	Wine w3 = new Wine(3, "Pinot Gris", "US", 87.33, 14.0, 27.0);
 	
 	@Test
-	void testGetWineList() {
+	public void testGetWineList() {
 		test.add(w1);
 		test.add(w2);
 		test.add(w3);
