@@ -11,124 +11,13 @@
 	<img id="logo" src="img/logo.svg">
 </header>
 
-<section id="winelist" data-ng-app="index" data-ng-controller="indexCtrl">
-	<section id="filter-sort-container">
-		<div id="filter-menu-container">
-			<div id="filter-menu-toggle">
-				<img id="filter-icon" src="img/filter-solid.svg">
-				<div id="filter-label">Filter Results</div>
-			</div>
-		</div>
-		
-		<div id="filter-menu-dropdown">
-			<div class="filter-option-container">
-				<label for="country-filter">Country</label>
-				<select id="country-filter"
-						data-ng-model="countryf"
-						data-ng-init="countryf = countryOptions[0]"
-						data-ng-options="option.name for option in countryOptions">
-				</select>
-			</div>
-			<div class="filter-option-container">
-				<label for="rating-min">Min Rating</label>
-				<input id="rating-min"
-						data-ng-model="minRating" 
-						type="number" min="0" max="{{maxRating}}"
-						placeholder="{{minAvgR}}">
-			</div>
-			<div class="filter-option-container">
-				<label for="rating-max">Max Rating</label>
-				<input id="rating-max"
-					data-ng-model="maxRating"
-					type="number" min="{{minRating}}" max="100"
-					placeholder="{{maxAvgR}}">
-			</div>
-			<div id="filter-menu-close" data-ng-click="currentPage=0">
-				Apply and Close
-			</div>
-		</div>
-		
-		<div id="sort-container">
-			<label for="sortfilter">Sort by</label>
-			<select id="sortfilter"
-			        data-ng-model="sortby" 
-			        data-ng-init="sortby = sortOptions[0]"
-			        data-ng-options="option.name for option in sortOptions">
-			</select>
-		</div>
-		
-		<div id="res-per-page-container">
-			<label for="rpp-filter">Results per page</label>
-			<select id="rpp-filter"
-					data-ng-model="rpp"
-					data-ng-init="rpp = rppOptions[0]"
-					data-ng-options="option for option in rppOptions"
-					data-ng-change="currentPage=0">
-			</select>
-		</div>
-
-	</section>
-	
-	<section class="paginate">
-		<button data-ng-disabled="currentPage == 0" data-ng-click="currentPage=currentPage-1">
-			Previous
-		</button>
-		<div class="curr-page">
-			Page {{currentPage+1}} of {{(filtered.length / rpp) | ceiling}}
-		</div>
-		<button data-ng-disabled="currentPage >= filtered.length / rpp - 1" data-ng-click="currentPage=currentPage+1">
-			Next
-		</button>
-	</section>
-	
-	<section id="wine-container">
-		<div class="wine" data-ng-repeat="wine in filtered = (wines | countryFilter:countryf.value | ratingFilter:minRating:maxRating) | orderBy:[sortby.value,'name'] | startFrom:currentPage*rpp | limitTo:rpp">
-			<div class="wine-bottle-container">
-				<img class="winebottle" src="img/wine_bottle.svg">
-			</div>
-			<div class="wine-info-container">
-				<div class="wine-info-left">
-					<div class="winename">
-						{{ wine.name }}
-					</div>
-					<div class="winecountry">
-						{{ wine.country || "Unknown" }}
-					</div>
-				</div>
-				<div class="wine-info-right">
-					<div class="winerating">
-						<span class="fieldname">Avg. Rating</br></span>
-						{{ wine.avgRating }}
-					</div>
-					<div class="wineprice">
-						<span class="fieldname">Price</br></span>
-						{{ wine.priceLow == wine.priceHigh ? 
-						(wine.priceLow == 0 ? "Unknown" : "$" + wine.priceLow) : 
-						("$" + wine.priceLow + " - $" + wine.priceHigh) }}
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	
-	<section class="paginate">
-		<button data-ng-disabled="currentPage == 0" data-ng-click="currentPage=currentPage-1">
-			Previous
-		</button>
-		<div class="curr-page">
-			Page {{currentPage+1}} of {{filtered.length / rpp | ceiling}}
-		</div>
-		<button data-ng-disabled="currentPage >= filtered.length / rpp - 1" data-ng-click="currentPage=currentPage+1">
-			Next
-		</button>
-	</section>
+<section id="winelist" data-ng-app="winelist" 
+        data-ng-controller="winelistCtrl"
+        data-ng-include="'views/winelist.htm'">
 </section>
-
 
 <script src="lib/angular/angular.js"></script>
 <script src="js/controller.js"></script>
-<script src="js/filtermenu.js"></script>
-
 
 </body>
 </html>

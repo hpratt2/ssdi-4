@@ -1,5 +1,8 @@
-var app = angular.module('index',[]);
-app.controller('indexCtrl',function($scope,$filter,$http){
+/* APP */
+var app = angular.module('winelist',[]);
+
+/* WINE LIST CONTROLLER */
+app.controller('winelistCtrl',function($scope,$filter,$http){
 	$scope.sortOptions = [
 		{name:'Avg. Rating', value:'-avgRating'},
 		{name:'Name: A - Z', value:'name'},
@@ -36,9 +39,15 @@ app.controller('indexCtrl',function($scope,$filter,$http){
 	$scope.currentPage = 0;
 	$scope.rpp = 25;
 	$scope.numPages = 1;
-	
+	$scope.viewDetails = function(id){
+		$scope.wid = id;
+		$http.get('rest/winedetail/' + id).then(function(response){
+			// TODO
+		});
+	}
 });
 
+/* FILTERS */
 app.filter("ratingFilter", function($filter){
 	return function(wines, minRating, maxRating){
 		if(!angular.isDefined(minRating) || !angular.isDefined(maxRating)){
@@ -87,6 +96,7 @@ app.filter('ceiling', function(){
 	}
 });
 
+/* UTIL */
 function existsInSet(set,fieldname,value){
 	return set.some(function(item){
 		return item[fieldname] === value;

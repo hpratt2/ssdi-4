@@ -226,6 +226,42 @@ header > #logo {
   	flex-flow: row wrap;
   	justify-content: space-evenly;
   	align-items: flex-start;
+  	cursor: pointer;
+}
+
+#winedetails-container {
+	margin: 0;
+	border: 8em solid rgba(255,255,255, 0.8);
+	padding: 0;
+	height: calc(100vh - 16em);
+	width: calc(100vw - 16em);
+	position: fixed;
+	top: 0;
+	left: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#winedetails-inner-container {
+	width:  calc(100vw - 16em - 2px);
+	height: calc(100vh - 16em - 2px);
+	border: 1px solid #ccc;
+	background-color: #e7e7e7;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#winedetails-close {
+	position: absolute;
+	top: 0;
+	right: 0;
+	cursor: pointer;
+}
+
+.cancel {
+	fill: #ccc;
 }
 
 .wine {
@@ -271,6 +307,7 @@ header > #logo {
 
 .fieldname {
 	font-family: "Lato-Heavy";
+	display: block;
 }
 
 .winename {
