@@ -1,6 +1,44 @@
+<body class="winedetails">
 <div id="winedetails-close">
   <img class="cancel" src="img/cancel.svg" data-ng-click="viewDetails(0)">
 </div>
-
+<div id="winedetails-inner-container">
+<div id="winedetail-header">
+<section id="wine-container">
+    <div class="wine-bottle-container">
+      <img class="winebottle" src="img/wine_bottle.svg">
+    </div>
+    <div class="wine-info-container">
+      <div class="wine-info-left">
+        <div class="winename">
+          {{ wines[wid-1].name }}
+        </div>
+        <div class="winecountry">
+          {{ wines[wid-1].country || "Unknown" }}
+        </div>
+        <div class="winecountry">
+          <span class="fieldname">Price</span>
+          {{ wines[wid-1].priceLow == wines[wid-1].priceHigh ? 
+          (wines[wid-1].priceLow == 0 ? "Unknown" : "$" + wine[wid-1].priceLow) : 
+          ("$" + wines[wid-1].priceLow + " - $" + wines[wid-1].priceHigh) }}
+        </div>    
+      </div>
+      <div id="similarWineButton">
+        <button type="button">Similar Wines</button>
+      </div>
+    </div>
+</section>
+</div>
+<br>
+<div id="reviews">
+<h1 class="title">
+Reviews
+</h1>
+<br>
+<section>
 TODO - WINE DETAILS <br>
 CLICKED WINE ID: {{wid}}
+</section>
+</div>
+</div>
+</body>

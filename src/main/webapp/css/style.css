@@ -251,6 +251,7 @@ header > #logo {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	flex-direction: column;
 }
 
 #winedetails-close {
@@ -330,6 +331,43 @@ header > #logo {
   	text-align: right;
   	font-size: 0.8em;
 }
+
+/*Wine detail styles*/
+.winedetails {
+	box-sizing: border box;
+	display:flex;
+	flex-wrap: wrap;
+}
+
+#winedetail-header {
+	background-color: #f1f1f1;
+    padding: 10px;
+    text-align: left;
+    width:  calc(100vw - 16em - 5px);
+    align: center;
+    padding:50px;
+    margin:20px;
+}
+
+#similarWineButton {
+	align:right;
+}
+
+#reviews {
+	background-color: #f1f1f1;
+    padding: 10px;
+    text-align: left;
+    width: 100%;
+    align: center;
+    padding:50px;
+    margin:20px;
+
+	}
+
+.title{
+	text-align: center;
+}
+
 
 /* SMALLER SCREEN SIZES */
 @media only screen and (max-width: 600px){
