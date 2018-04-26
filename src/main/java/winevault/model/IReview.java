@@ -5,8 +5,8 @@ public interface IReview {
 	public int getID();
 	public void setWineID(int id);
 	public int getWineID();
-	public void setReviewerID(int id);
-	public int getReviewerID();
+	public void setReviewer(IReviewer r);
+	public IReviewer getReviewer();
 	public void setRating(double rating);
 	public double getRating();
 	public void setPrice(double price);

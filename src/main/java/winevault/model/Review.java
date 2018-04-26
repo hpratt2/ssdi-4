@@ -4,7 +4,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Review implements IReview {
-	private int id, wineID, reviewerID;
+	private int id, wineID;
+	private IReviewer reviewer;
 	private double rating, price;
 	private String title = null,
 			content = null,
@@ -25,9 +26,9 @@ public class Review implements IReview {
 
 	public int getWineID() { return this.wineID; }
 
-	public void setReviewerID(int id) { this.reviewerID = id; }
+	public void setReviewer(IReviewer r) { this.reviewer = r; }
 
-	public int getReviewerID() { return this.reviewerID; }
+	public IReviewer getReviewer() { return this.reviewer; }
 
 	public void setRating(double rating) { this.rating = rating; }
 

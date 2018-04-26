@@ -27,6 +27,7 @@ public class WineDAO implements IWineDAO {
 			statement = conn.prepareStatement(sql);
 			statement.setString(1, wine.getName());
 			statement.executeUpdate();
+			conn.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -51,6 +52,7 @@ public class WineDAO implements IWineDAO {
 						rs.getDouble(6)
 				));
 			}
+			conn.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

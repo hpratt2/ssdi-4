@@ -2,9 +2,9 @@ package winevault.service;
 
 import java.util.List;
 
-import winevault.dao.IWineDAO;
-import winevault.dao.WineDAO;
-import winevault.model.IWine;
+import winevault.dao.IReviewDAO;
+import winevault.dao.ReviewDAO;
+import winevault.model.IReview;
 import winevault.util.ConnectionDataTestLarge;
 
 public class ReviewService {

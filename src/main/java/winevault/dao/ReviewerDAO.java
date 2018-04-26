@@ -34,6 +34,7 @@ public class ReviewerDAO implements IReviewerDAO {
 						rs.getString("username")
 				));
 			}
+			conn.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -57,6 +58,7 @@ public class ReviewerDAO implements IReviewerDAO {
 						rs.getString("username")
 				);
 			}
+			conn.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

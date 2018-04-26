@@ -24,6 +24,7 @@ public class ReviewDAO implements IReviewDAO {
 		ResultSet rs = null;
 		List<IReview> reviews = new ArrayList<IReview>();
 		try {
+			IReviewerDAO dao = new ReviewerDAO(connData);
 			conn = ConnectionUtil.getConnection(connData);
 			statement = conn.prepareStatement("SELECT * FROM reviews WHERE wid = ?");
 			statement.setInt(1, wineID);
@@ -32,7 +33,7 @@ public class ReviewDAO implements IReviewDAO {
 				Review r = new Review();
 				r.setID(rs.getInt("id"));
 				r.setWineID(rs.getInt("wid"));
-				r.setReviewerID(rs.getInt("uid"));
+				r.setReviewer(dao.getReviewerByID(rs.getInt("uid")));
 				r.setRating(rs.getDouble("rating"));
 				r.setPrice(rs.getDouble("price"));
 				r.setTitle(rs.getString("title"));
@@ -45,6 +46,7 @@ public class ReviewDAO implements IReviewDAO {
 				r.setDesignation(rs.getString("designation"));
 				reviews.add(r);
 			}
+			conn.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -57,6 +59,7 @@ public class ReviewDAO implements IReviewDAO {
 		ResultSet rs = null;
 		List<IReview> reviews = new ArrayList<IReview>();
 		try {
+			IReviewerDAO dao = new ReviewerDAO(connData);
 			conn = ConnectionUtil.getConnection(connData);
 			statement = conn.prepareStatement("SELECT * FROM reviews");
 			rs = statement.executeQuery();
@@ -64,7 +67,7 @@ public class ReviewDAO implements IReviewDAO {
 				Review r = new Review();
 				r.setID(rs.getInt("id"));
 				r.setWineID(rs.getInt("wid"));
-				r.setReviewerID(rs.getInt("uid"));
+				r.setReviewer(dao.getReviewerByID(rs.getInt("uid")));
 				r.setRating(rs.getDouble("rating"));
 				r.setPrice(rs.getDouble("price"));
 				r.setTitle(rs.getString("title"));
@@ -77,6 +80,7 @@ public class ReviewDAO implements IReviewDAO {
 				r.setDesignation(rs.getString("designation"));
 				reviews.add(r);
 			}
+			conn.close();
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

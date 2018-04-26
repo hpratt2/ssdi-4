@@ -6,12 +6,13 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.awt.List;
+import java.util.List;
 import java.util.ArrayList;
 
 import org.junit.Test;
 
-import winevault.dao.WineDAO;
+import winevault.dao.ReviewDAO;
+import winevault.model.IReview;
 
 public class ReviewServiceTest {
 	ReviewDAO dao = mock(ReviewDAO.class);
@@ -19,7 +20,9 @@ public class ReviewServiceTest {
 	
 	private List<IReview> test = new ArrayList<IReview>();
 	//REVIEW 1
+	IReview r1 = null;
 	//REVIEW 2
+	IReview r2 = null;
 
 	@Test
 	public void testGetReviews() {
@@ -37,9 +40,9 @@ public class ReviewServiceTest {
 		test.add(r1);
 		test.add(r2);
 		
-		when(dao.getReviewsByWineID(id)).thenReturn(r1);
+		when(dao.getReviewsByWineID(id)).thenReturn(test);
 		rsl.getReviewsByWineID(id);
-		verify(rsl, times(1)).getReviewsByWineID();
+		verify(rsl, times(1)).getReviewsByWineID(id);
 		
 	}
 

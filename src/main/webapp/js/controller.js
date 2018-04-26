@@ -25,6 +25,9 @@ app.controller('winelistCtrl',function($scope,$filter,$http){
 			}
 			if(obj.avgRating < $scope.minRating){ $scope.minRating = obj.avgRating; }
 			if(obj.avgRating > $scope.maxRating){ $scope.maxRating = obj.avgRating; }
+			$http.get('rest/reviews/' + obj.id).then(function(reviewResponse){
+				obj.reviews = reviewResponse.data;
+			});
 		}
 		
 		$scope.countryOptions.sort(function(a,b){

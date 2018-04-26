@@ -1,44 +1,67 @@
-<body class="winedetails">
-<div id="winedetails-close">
-  <img class="cancel" src="img/cancel.svg" data-ng-click="viewDetails(0)">
-</div>
-<div id="winedetails-inner-container">
-<div id="winedetail-header">
-<section id="wine-container">
+<div class="winedetails-row-container">
+  <div class="wine-info-container">
     <div class="wine-bottle-container">
-      <img class="winebottle" src="img/wine_bottle.svg">
+        <img class="winebottle" src="img/wine_bottle.svg">
     </div>
-    <div class="wine-info-container">
-      <div class="wine-info-left">
-        <div class="winename">
-          {{ wines[wid-1].name }}
-        </div>
-        <div class="winecountry">
-          {{ wines[wid-1].country || "Unknown" }}
-        </div>
-        <div class="winecountry">
-          <span class="fieldname">Price</span>
-          {{ wines[wid-1].priceLow == wines[wid-1].priceHigh ? 
-          (wines[wid-1].priceLow == 0 ? "Unknown" : "$" + wine[wid-1].priceLow) : 
-          ("$" + wines[wid-1].priceLow + " - $" + wines[wid-1].priceHigh) }}
-        </div>    
+    
+    <div class="wine-info-left">
+      <div class="winename">
+        {{ wines[wid-1].name }}
       </div>
-      <div id="similarWineButton">
-        <button type="button">Similar Wines</button>
+      <div class="winecountry">
+        {{ wines[wid-1].country || "Unknown" }}
+      </div>
+      <div class="wineprice-l">
+        <span class="fieldname">Price</span>
+        {{ wines[wid-1].priceLow == wines[wid-1].priceHigh ? 
+        (wines[wid-1].priceLow == 0 ? "Unknown" : "$" + wines[wid-1].priceLow) : 
+        ("$" + wines[wid-1].priceLow + " - $" + wines[wid-1].priceHigh) }}
+      </div>    
+    </div>
+    
+    <div class="wine-info-right no-grow">
+      <div id="winedetails-close">
+        <img class="cancel" src="img/cancel.svg" data-ng-click="viewDetails(0)">
+      </div>
+      <div id="similar-wine-button-container">
+        <button id="similar-wine-button" type="button">Find Similar Wines</button>
       </div>
     </div>
-</section>
+  </div>
 </div>
-<br>
-<div id="reviews">
-<h1 class="title">
-Reviews
-</h1>
-<br>
-<section>
-TODO - WINE DETAILS <br>
-CLICKED WINE ID: {{wid}}
-</section>
+
+<div class="section-title">Reviews</div>
+
+<div class="section-details">
+  <b>Avg. Rating:&nbsp;</b> {{ wines[wid-1].avgRating }}
 </div>
+
+<div class="winedetails-review-container">
+  <div class="review-container" data-ng-repeat="review in wines[wid-1].reviews">
+    <div class="review-header">
+      <div class="review-title">{{ review.title }}</div>
+      <div class="review-price">{{ "$" + review.price }}</div>
+    </div>
+    
+    <div class="review-details-container">
+      <div class="review-details-left">
+        <div class="reviewer-container">
+          <div class="review-rating">{{ review.rating }}</div>
+          <div class="review-author"><span class="tiny">By</span><br>{{ review.reviewer.name || "@"+review.reviewer.username }}</div>
+        </div>
+        <div class="review-location">
+          <div class="review-winery">{{review.winery || ""}}</div>
+          <div class="review-region">
+            {{ review.subregion ? review.subregion + ", " : "" }}
+            {{ review.region ? review.region : "" }}
+          </div>
+          <div class="review-province">
+            {{ review.province ? review.province + ", " : "" }}
+            {{ review.country || "Unknown"}}
+          </div>
+        </div>
+      </div>
+      <div class="review-content">{{ review.content }}</div>
+    </div>
+  </div>
 </div>
-</body>
