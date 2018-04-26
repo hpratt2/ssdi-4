@@ -37,4 +37,8 @@ public class Wine implements IWine {
 	public double getPriceHigh() { return priceHigh; }
 	public void setPriceHigh(double priceHigh) { this.priceHigh = priceHigh; }
 	
+	public boolean equals(Wine wine) {
+		return this.id == wine.getID();
+	}
+	
 }
