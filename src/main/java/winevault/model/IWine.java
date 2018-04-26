@@ -13,4 +13,5 @@ public interface IWine {
 	public void setPriceLow(double priceLow);
 	public double getPriceHigh();
 	public void setPriceHigh(double priceHigh);
+	public boolean equals(IWine wine);
 }

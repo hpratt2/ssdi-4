@@ -2,6 +2,7 @@ package winevault.nlp;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,7 @@ import winevault.model.IWine;
 import winevault.util.ConnectionDataTestLarge;
 
 public class Corpus {
+	private static final URL DATA_URL = Corpus.class.getResource("data/corpus.txt");
 	private static final String DATA_FILE = "src/main/java/winevault/nlp/data/corpus.txt";
 	private static TreeMap<String,Integer> corpus = null;
 	private static int numDocuments = 0;
@@ -73,7 +75,7 @@ public class Corpus {
 	private static void load() {
 		try {
 			corpus = new TreeMap<String,Integer>();
-			Scanner fs = new Scanner(new File(DATA_FILE));
+			Scanner fs = new Scanner(new File(DATA_URL.getFile()));
 			numDocuments = Integer.parseInt(fs.nextLine());
 			while(fs.hasNextLine()) {
 				String[] line = fs.nextLine().split("\t");
@@ -87,7 +89,7 @@ public class Corpus {
 	
 	private static void checkInit() {
 		if(corpus == null) {
-			File corpusFile = new File(DATA_FILE);
+			File corpusFile = new File(DATA_URL.getFile());
 			if(corpusFile.exists() && !corpusFile.isDirectory())
 				load();
 			else
