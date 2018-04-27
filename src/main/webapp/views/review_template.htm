@@ -1,0 +1,25 @@
+<div class="review-header">
+  <div class="review-title">{{ review.title }}</div>
+  <div class="review-price">{{ "$" + review.price }}</div>
+</div>
+
+<div class="review-details-container">
+  <div class="review-details-left">
+    <div class="reviewer-container">
+      <div class="review-rating">{{ review.rating }}</div>
+      <div class="review-author"><span class="tiny">By</span><br>{{ review.reviewer.name || "@"+review.reviewer.username }}</div>
+    </div>
+    <div class="review-location">
+      <div class="review-winery">{{review.winery || ""}}</div>
+      <div class="review-region">
+        {{ review.subregion ? review.subregion + ", " : "" }}
+        {{ review.region ? review.region : "" }}
+      </div>
+      <div class="review-province">
+        {{ review.province ? review.province + ", " : "" }}
+        {{ review.country || "Unknown"}}
+      </div>
+    </div>
+  </div>
+  <div class="review-content">{{ review.content }}</div>
+</div>

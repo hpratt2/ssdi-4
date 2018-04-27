@@ -27,8 +27,6 @@ public class SimilarWineService {
 		BagOfWords userWants = new BagOfWords();
 		userWants.add(description);
 		for(IWine likedWine : likes) {
-			// Remove this wine from the list of possible wines (already tried)
-			wines.remove(likedWine);
 			// Update bag of words representation of user likes
 			List<IReview> reviews = reviewdao.getReviewsByWineID(likedWine.getID());
 			for(IReview review : reviews) userWants.add(review.getContent());
@@ -36,11 +34,23 @@ public class SimilarWineService {
 		
 		BagOfWords userDoesntWant = new BagOfWords();
 		for(IWine dislikedWine : dislikes) {
-			// Remove this wine from the list of possible wines (already tried)
-			wines.remove(dislikedWine);
 			// Update bag of words representation of user likes
 			List<IReview> reviews = reviewdao.getReviewsByWineID(dislikedWine.getID());
 			for(IReview review : reviews) userDoesntWant.add(review.getContent());
+		}
+		
+		// Remove wines user has tried and liked
+		for(IWine wine : wines) {
+			for(IWine likedWine : likes) {
+				if(wine.equals(likedWine)) wines.remove(wine);
+			}
+		}
+		
+		// Remove wines user has tried and disliked
+		for(IWine wine : wines) {
+			for(IWine dislikedWine : dislikes) {
+				if(wine.equals(dislikedWine)) wines.remove(wine);
+			}
 		}
 		
 		if(wines.size() < 5) return wines;
@@ -74,12 +84,12 @@ public class SimilarWineService {
 		List<IWine> similarWines = new ArrayList<IWine>();
 		BagOfWords wineBag = getWineBagOfWords(wine);
 		List<IWine> wines = winedao.getWineList();
-		wines.remove(wine);
 		
 		if(wines.size() < 5) return wines;
 		
 		double[] scores = new double[wines.size()];
 		for(int i = 0; i < wines.size(); i++) {
+			System.out.println("computing similarity of " + wines.get(i).getID());
 			BagOfWords bag = getWineBagOfWords(wines.get(i));
 			scores[i] = wineBag.similarityTo(bag);
 		}
@@ -93,7 +103,8 @@ public class SimilarWineService {
 					maxIndex = i;
 				}
 			}
-			similarWines.add(wines.get(maxIndex));
+			if(!wines.get(maxIndex).equals(wine))
+				similarWines.add(wines.get(maxIndex));
 			scores[maxIndex] = -100;
 		}
 		

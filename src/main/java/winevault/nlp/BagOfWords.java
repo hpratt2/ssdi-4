@@ -9,6 +9,7 @@ import org.deeplearning4j.text.tokenization.tokenizerfactory.UimaTokenizerFactor
 public class BagOfWords {
 	private TreeMap<String,Integer> bag = null;		// bag of words
 	private TreeMap<String,Double> vector = null;	// TF-IDF weighted vector
+	private int documentTerms = 0;
 	
 	public BagOfWords() {
 		bag = new TreeMap<String,Integer>();
@@ -26,6 +27,7 @@ public class BagOfWords {
 					bag.replace(str, bag.get(str) + 1);
 				else
 					bag.put(str,  1);
+				documentTerms++;
 			}
 			updateVector();
 		} catch(Exception e) {
@@ -46,7 +48,9 @@ public class BagOfWords {
 	
 	private double tf_idf(String key) {
 		if(!bag.containsKey(key)) return 0;
-		return bag.get(key) * Math.log(Corpus.N() / (double)(Corpus.documentsContaining(key)+1));
+		double tf = (double)bag.get(key) / documentTerms;
+		double idf = Math.log(Corpus.N() / (double)Corpus.documentsContaining(key) + 1);
+		return tf * idf;
 	}
 	
 	public double similarityTo(BagOfWords b) {

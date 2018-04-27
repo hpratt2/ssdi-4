@@ -1,8 +1,29 @@
 /* APP */
-var app = angular.module('winelist',[]);
+var app = angular.module('winevault',['ngRoute']);
 
-/* WINE LIST CONTROLLER */
-app.controller('winelistCtrl',function($scope,$filter,$http){
+/* ROUTE CONFIGURATION */
+app.config(function($routeProvider){
+	$routeProvider
+		.when('/', {
+			templateUrl: 'views/winelist.htm',
+			controller: 'mainCtrl'
+		})
+		.when('/similarwine/:id', {
+			templateUrl: 'views/similarwine.htm',
+			controller: 'similarWineCtrl'
+		})
+		.when('/advancedsearch/', {
+			templateUrl: 'views/advancedsearch.htm',
+			controller: 'advSearchCtrl'
+		})
+		.otherwise({
+			redirectTo: '/'
+		});
+});
+
+/* MAIN CONTROLLER */
+app.controller('mainCtrl', function($scope, $http, $location, $routeParams){
+	/* wine list sorting options */
 	$scope.sortOptions = [
 		{name:'Avg. Rating', value:'-avgRating'},
 		{name:'Name: A - Z', value:'name'},
@@ -10,44 +31,65 @@ app.controller('winelistCtrl',function($scope,$filter,$http){
 		{name:'Price: Low to High', value:'priceLow'},
 		{name:'Price: High to Low', value:'-priceHigh'}
 	];
-	$scope.rppOptions = [25,50,100];
+	
+	/* country filter options - populated on HTTP GET */
+	$scope.countryOptions = [];
+	
+	/* rating filter options - updated on HTTP GET */
+	$scope.minRating = 100; // initially high to get rating minimum
+	$scope.maxRating = 0;	// initially low to get rating maximum
+	
+	/* results per page options */
+	$scope.rppOptions = [25, 50, 100];
+	
+	/* initial page settings */
+	$scope.currentPage = 0;	// first page
+	$scope.rpp = 25;		// 25 results per page
+	$scope.numPages = 1;	// number of pages of results
+	
+	/* function to update wine details view based on wine id */
+	$scope.viewDetails = function(id){ $scope.wid = id; }
+	
+	/* function to go to similar wines page */
+	$scope.findSimilarWines = function(id){
+		$location.path('similarwine/' + id);
+	}
+	
+	/* fetch the wines from the back-end */
 	$http.get('rest/winelist').then(function(response){
 		$scope.status = response.status;
 		$scope.wines = response.data;
-		$scope.countryOptions = [];
-		$scope.minRating = 100;
-		$scope.maxRating = 0;
 		
-		for(let obj of $scope.wines){
-			if(obj.country == null) continue;
-			if(!existsInSet($scope.countryOptions,'name',obj.country)){
-				$scope.countryOptions.push({name:obj.country,value:obj.country});
+		// update country and rating filter options and attach reviews to wines
+		for(let wine of $scope.wines){
+			if(wine.country != null && !existsInSet($scope.countryOptions, "name", wine.country)){
+				$scope.countryOptions.push({name:wine.country, value:wine.country});
 			}
-			if(obj.avgRating < $scope.minRating){ $scope.minRating = obj.avgRating; }
-			if(obj.avgRating > $scope.maxRating){ $scope.maxRating = obj.avgRating; }
-			$http.get('rest/reviews/' + obj.id).then(function(reviewResponse){
-				obj.reviews = reviewResponse.data;
+			
+			if(wine.avgRating < $scope.minRating){ $scope.minRating = wine.avgRating; }
+			if(wine.avgRating > $scope.maxRating){ $scope.maxRating = wine.avgRating; }
+			
+			$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
+				wine.reviews = reviewResponse.data;
 			});
 		}
 		
+		// sort the country options alphabetically
 		$scope.countryOptions.sort(function(a,b){
 			if(a.name < b.name) return -1;
-			else if(a.name > b.name) return 1;
+			else if(a.name > b.name)  return 1;
 			else return 0;
 		});
-		$scope.countryOptions.unshift({name:"Any",value:""});
-		$scope.countryOptions.push({name:"[Unknown]",value:null});
+		
+		// prepend the "Any" country option & append the '[Unknown]' country options
+		$scope.countryOptions.unshift({name: 'Any', value: ''});
+		$scope.countryOptions.push({name: '[Unknown]', value: null});
 	});
-	
-	$scope.currentPage = 0;
-	$scope.rpp = 25;
-	$scope.numPages = 1;
-	$scope.viewDetails = function(id){
-		$scope.wid = id;
-		$http.get('rest/winedetail/' + id).then(function(response){
-			// TODO
-		});
-	}
+});
+
+/* SIMILAR WINE CONTROLLER */
+app.controller('similarWineCtrl', function($scope, $http, $routeParams){
+	// TODO
 });
 
 /* FILTERS */
@@ -100,7 +142,7 @@ app.filter('ceiling', function(){
 });
 
 /* UTIL */
-function existsInSet(set,fieldname,value){
+function existsInSet(set, fieldname, value){
 	return set.some(function(item){
 		return item[fieldname] === value;
 	});

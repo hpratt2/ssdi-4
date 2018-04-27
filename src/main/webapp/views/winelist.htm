@@ -1,3 +1,5 @@
+<!-- FILTERS & SORT OPTIONS -->
+
 <section id="filter-sort-container">
   <div id="filter-menu-container">
     <div id="filter-menu-toggle">
@@ -54,6 +56,8 @@
   </div>
 </section>
 
+<!-- TOP OF PAGE RESULTS PAGINATION -->
+
 <section class="paginate">
   <button data-ng-disabled="currentPage == 0" data-ng-click="currentPage=currentPage-1">
     Previous
@@ -66,36 +70,17 @@
   </button>
 </section>
 
+<!-- WINE RESULTS -->
+
 <section id="wine-container">
   <div class="wine" data-ng-repeat="wine in filtered = (wines | countryFilter:countryf.value | ratingFilter:minRating:maxRating) | orderBy:[sortby.value,'name'] | startFrom:currentPage*rpp | limitTo:rpp"
+      data-ng-include="'views/wine_template.htm'"
       data-ng-data="{{wine.id}}" data-ng-click="viewDetails(wine.id)">
-    <div class="wine-bottle-container">
-      <img class="winebottle" src="img/wine_bottle.svg">
-    </div>
-    <div class="wine-info-container">
-      <div class="wine-info-left">
-        <div class="winename">
-          {{ wine.name }}
-        </div>
-        <div class="winecountry">
-          {{ wine.country || "Unknown" }}
-        </div>
-      </div>
-      <div class="wine-info-right">
-        <div class="winerating">
-          <span class="fieldname">Avg. Rating</span>
-          {{ wine.avgRating }}
-        </div>
-        <div class="wineprice">
-          <span class="fieldname">Price</span>
-          {{ wine.priceLow == wine.priceHigh ? 
-          (wine.priceLow == 0 ? "Unknown" : "$" + wine.priceLow) : 
-          ("$" + wine.priceLow + " - $" + wine.priceHigh) }}
-        </div>
-      </div>
-    </div>
+      <!-- TEMPLATE -->
   </div>
 </section>
+
+<!-- BOTTOM OF PAGE RESULTS PAGINATION -->
 
 <section class="paginate">
   <button data-ng-disabled="currentPage == 0" data-ng-click="currentPage=currentPage-1">
@@ -109,10 +94,11 @@
   </button>
 </section>
 
+<!-- WINE DETAILS POP-UP -->
+
 <section id="winedetails-container" data-ng-show="wid > 0">
   <div id="winedetails-inner-container" data-ng-include="'views/winedetails.htm'">
-  
+    <!-- TEMPLATE -->
   </div>
 </section>
 
-<script src="js/filtermenu.js"></script>

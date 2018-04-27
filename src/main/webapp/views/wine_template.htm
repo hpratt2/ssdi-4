@@ -1,0 +1,25 @@
+<div class="wine-bottle-container">
+  <img class="winebottle" src="img/wine_bottle.svg">
+</div>
+<div class="wine-info-container">
+  <div class="wine-info-left">
+    <div class="winename">
+      {{ wine.name }}
+    </div>
+    <div class="winecountry">
+      {{ wine.country || "Unknown" }}
+    </div>
+  </div>
+  <div class="wine-info-right">
+    <div class="winerating">
+      <span class="fieldname">Avg. Rating</span>
+      {{ wine.avgRating }}
+    </div>
+    <div class="wineprice">
+      <span class="fieldname">Price</span>
+      {{ wine.priceLow == wine.priceHigh ? 
+      (wine.priceLow == 0 ? "Unknown" : "$" + wine.priceLow) : 
+      ("$" + wine.priceLow + " - $" + wine.priceHigh) }}
+    </div>
+  </div>
+</div>
