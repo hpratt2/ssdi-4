@@ -31,6 +31,13 @@ public class IndexController {
 	}
 	
 	@GET
+	@Path("/wine/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public IWine getWineByID(@PathParam("id") int id) {
+		return wineService.getWineByID(id);
+	}
+	
+	@GET
 	@Path("/reviews/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<IReview> getReviews(@PathParam("id") int id){

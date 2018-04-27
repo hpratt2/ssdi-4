@@ -1,6 +1,7 @@
 package winevault.nlp;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
@@ -75,7 +76,12 @@ public class Corpus {
 	private static void load() {
 		try {
 			corpus = new TreeMap<String,Integer>();
-			Scanner fs = new Scanner(new File(DATA_URL.getFile()));
+			Scanner fs = new Scanner(new FileInputStream(DATA_URL.getFile()), "UTF-8");
+			if(!fs.hasNextLine()) {
+				System.out.println("ERROR READING FILE");
+				fs.close();
+				return;
+			}
 			numDocuments = Integer.parseInt(fs.nextLine());
 			while(fs.hasNextLine()) {
 				String[] line = fs.nextLine().split("\t");

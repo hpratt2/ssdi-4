@@ -530,16 +530,40 @@ header > #logo {
 .title{
 	text-align: center;
 }
+
 /* SIMILAR WINES */
 
-#similar-wines {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: #ccc;
-	z-index:2;
+.section-header {
+	padding: 1em;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 2em;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.large-caps-left {
+	display: block;
+	font-family: "Lato-Regular";
+	font-size: 1em;
+	padding-right: 1em;
+	text-transform: uppercase;
+	text-align: right;
+}
+
+.large-caps-right {
+	display: block;
+	font-family: "Lato-Regular";
+	font-size: 1em;
+	padding-left: 1em;
+	text-transform: uppercase;
+	text-align: left;
+}
+
+.script-lrg {
+	font-family: "DancingScript-Bold";
+	font-size: 3em;
 }
 
 /* SMALLER SCREEN SIZES */

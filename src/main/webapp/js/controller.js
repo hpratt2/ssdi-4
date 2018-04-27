@@ -9,7 +9,7 @@ app.config(function($routeProvider){
 			controller: 'mainCtrl'
 		})
 		.when('/similarwine/:id', {
-			templateUrl: 'views/similarwine.htm',
+			templateUrl: 'views/similarresults.htm',
 			controller: 'similarWineCtrl'
 		})
 		.when('/advancedsearch/', {
@@ -88,8 +88,20 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams){
 });
 
 /* SIMILAR WINE CONTROLLER */
-app.controller('similarWineCtrl', function($scope, $http, $routeParams){
+app.controller('similarWineCtrl', function($scope, $http, $routeParams, $location){
 	// TODO
+	var url = $location.path().split('/');
+	$http.get('rest/wine/' + url[2]).then(function(response){
+		$scope.basewine = response.data;
+	});
+	$http.get('rest/similarwine/' + url[2]).then(function(response){
+		$scope.searchResults = response.data;
+		for(let wine of $scope.searchResults){
+			$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
+				wine.reviews = reviewResponse.data;
+			});
+		}
+	});
 });
 
 /* FILTERS */

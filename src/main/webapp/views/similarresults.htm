@@ -1,0 +1,18 @@
+<section class="section-header">
+	<span class="large-caps-left">IF YOU<br>ENJOY</span>
+	<span class="script-lrg">{{ basewine.name }}</span>
+	<span class="large-caps-right">YOU MIGHT<br>ALSO LIKE...</span>
+</section>
+
+<section class="search-results">
+	<div class="result-container" data-ng-repeat="wine in searchResults">
+		<div class="wine" data-ng-include="'views/wine_template.htm'"
+				data-ng-data="{{ wine.id }}" data-ng-click="viewDetails(wine.id)">
+			<!-- TEMPLATE -->
+		</div>
+		<div class="review-container" data-ng-repeat="review in wine.reviews"
+				data-ng-include="'views/review_template.htm'">
+			<!-- TEMPLATE -->
+		</div>
+	</div>
+</section>
