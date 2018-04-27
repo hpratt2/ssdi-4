@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import winevault.model.IWine;
 import winevault.model.Wine;
-import winevault.service.WineListService;
+import winevault.service.WineService;
 
 public class IndexControllerTest extends JerseyTest {
 	
@@ -28,7 +28,7 @@ public class IndexControllerTest extends JerseyTest {
 	Wine w2 = new Wine(2, "Portuguese Red", "Portugal", 87.0, 15.0, 15.0);
 	Wine w3 = new Wine(3, "Pinot Gris", "US", 87.33, 14.0, 27.0);
 	
-	WineListService wls = mock(WineListService.class);
+	WineService wls = mock(WineService.class);
 	IndexController ctrl = mock(IndexController.class);
 	
 	@Override

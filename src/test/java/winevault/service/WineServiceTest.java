@@ -11,9 +11,9 @@ import winevault.model.Wine;
 
 import static org.mockito.Mockito.*;
 
-public class WineListServiceTest {
+public class WineServiceTest {
 	WineDAO dao = mock(WineDAO.class);
-	WineListService wls = mock(WineListService.class);
+	WineService wls = mock(WineService.class);
 	
 	private List<IWine> test = new ArrayList<IWine>();
 	Wine w1 = new Wine(1, "White Blend", "Italy", 87.0, 10.0, 12.0);
