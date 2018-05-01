@@ -6,16 +6,16 @@
     
     <div class="wine-info-left">
       <div class="winename">
-        {{ wines[wid-1].name }}
+        {{ currentWine.name }}
       </div>
       <div class="winecountry">
-        {{ wines[wid-1].country || "Unknown" }}
+        {{ currentWine.country || "Unknown" }}
       </div>
       <div class="wineprice-l">
         <span class="fieldname">Price</span>
-        {{ wines[wid-1].priceLow == wines[wid-1].priceHigh ? 
-        (wines[wid-1].priceLow == 0 ? "Unknown" : "$" + wines[wid-1].priceLow) : 
-        ("$" + wines[wid-1].priceLow + " - $" + wines[wid-1].priceHigh) }}
+        {{ currentWine.priceLow == currentWine.priceHigh ? 
+        (currentWine.priceLow == 0 ? "Unknown" : "$" + currentWine.priceLow) : 
+        ("$" + currentWine.priceLow + " - $" + currentWine.priceHigh) }}
       </div>    
     </div>
     
@@ -24,7 +24,7 @@
         <img class="cancel" src="img/cancel.svg" data-ng-click="viewDetails(0)">
       </div>
       <div class="similar-wine-button-container">
-        <div class="similar-wine-button" data-ng-data="{{wid}}" data-ng-click="findSimilarWines(wid)">Find Similar Wines</div>
+        <div class="similar-wine-button" data-ng-data="{{currentWine.id}}" data-ng-click="findSimilarWines(currentWine.id)">Find Similar Wines</div>
       </div>
     </div>
   </div>
@@ -33,11 +33,11 @@
 <div class="section-title">Reviews</div>
 
 <div class="section-details">
-  <b>Avg. Rating:&nbsp;</b> {{ wines[wid-1].avgRating }}
+  <b>Avg. Rating:&nbsp;</b> {{ currentWine.avgRating }}
 </div>
 
 <div class="winedetails-review-container">
-  <div class="review-container" data-ng-repeat="review in wines[wid-1].reviews" data-ng-include="'views/review_template.htm'">
+  <div class="review-container" data-ng-repeat="review in currentWine.reviews" data-ng-include="'views/review_template.htm'">
     <!-- TEMPLATE -->
   </div>
 </div>

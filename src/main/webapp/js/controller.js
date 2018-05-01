@@ -48,7 +48,11 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams){
 	$scope.numPages = 1;	// number of pages of results
 	
 	/* function to update wine details view based on wine id */
-	$scope.viewDetails = function(id){ $scope.wid = id; }
+	$scope.viewDetails = function(wine){
+		if(wine == 0){ $scope.currentWine = null; $scope.wid = 0; return; }
+		$scope.currentWine = wine;
+		$scope.wid = wine.id;
+	}
 	
 	/* function to go to similar wines page */
 	$scope.findSimilarWines = function(id){
@@ -89,14 +93,25 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams){
 
 /* SIMILAR WINE CONTROLLER */
 app.controller('similarWineCtrl', function($scope, $http, $routeParams, $location){
-	// TODO
+	/* function to update wine details view based on wine id */
+	$scope.viewDetails = function(wine){
+		if(wine == 0){ $scope.currentWine = null; $scope.wid = 0; return; }
+		$scope.currentWine = wine;
+		$scope.wid = wine.id;
+	}
+	
+	/* function to go to similar wines page */
+	$scope.findSimilarWines = function(id){
+		$location.path('similarwine/' + id);
+	}
+	
 	var url = $location.path().split('/');
 	$http.get('rest/wine/' + url[2]).then(function(response){
 		$scope.basewine = response.data;
 	});
 	$http.get('rest/similarwine/' + url[2]).then(function(response){
-		$scope.searchResults = response.data;
-		for(let wine of $scope.searchResults){
+		$scope.wines = response.data;
+		for(let wine of $scope.wines){
 			$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
 				wine.reviews = reviewResponse.data;
 			});

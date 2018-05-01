@@ -255,7 +255,6 @@ header > #logo {
   	flex-flow: row wrap;
   	justify-content: space-evenly;
   	align-items: flex-start;
-  	cursor: pointer;
 }
 
 #winedetails-container {
@@ -304,6 +303,7 @@ header > #logo {
   	flex-flow: row nowrap;
   	justify-content: space-between;
   	flex: 1 0 25em;
+  	cursor: pointer;
 }
 
 .wine-bottle-container {
@@ -443,7 +443,9 @@ header > #logo {
 
 .review-container {
 	border: 1px solid #d7d7d7;
-	margin-bottom: 1.5em;
+	margin: 0 1em 1em 1em;
+	display: flex;
+	flex-flow: column nowrap;
 }
 
 .review-header {
@@ -564,6 +566,36 @@ header > #logo {
 .script-lrg {
 	font-family: "DancingScript-Bold";
 	font-size: 3em;
+}
+
+.search-results {
+	display: flex;
+	flex-flow: column wrap;
+}
+
+.result-container {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.left-col-container {
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: flex-start;
+	flex: 1 0 30em;
+}
+
+.right-col-container {
+	display: flex;
+	flex-flow: column nowrap;
+	min-width: 25em;
+	margin-top: 1em;
+}
+
+@media only screen and (max-width: 1200px){
+	.result-container{
+		flex-flow: row wrap;
+	}
 }
 
 /* SMALLER SCREEN SIZES */

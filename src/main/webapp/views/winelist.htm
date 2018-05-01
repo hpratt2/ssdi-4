@@ -75,7 +75,7 @@
 <section id="wine-container">
   <div class="wine" data-ng-repeat="wine in filtered = (wines | countryFilter:countryf.value | ratingFilter:minRating:maxRating) | orderBy:[sortby.value,'name'] | startFrom:currentPage*rpp | limitTo:rpp"
       data-ng-include="'views/wine_template.htm'"
-      data-ng-data="{{wine.id}}" data-ng-click="viewDetails(wine.id)">
+      data-ng-data="{{ wine }}" data-ng-click="viewDetails(wine)">
       <!-- TEMPLATE -->
   </div>
 </section>

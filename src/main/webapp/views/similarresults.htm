@@ -5,14 +5,24 @@
 </section>
 
 <section class="search-results">
-	<div class="result-container" data-ng-repeat="wine in searchResults">
-		<div class="wine" data-ng-include="'views/wine_template.htm'"
-				data-ng-data="{{ wine.id }}" data-ng-click="viewDetails(wine.id)">
-			<!-- TEMPLATE -->
-		</div>
-		<div class="review-container" data-ng-repeat="review in wine.reviews"
-				data-ng-include="'views/review_template.htm'">
-			<!-- TEMPLATE -->
-		</div>
-	</div>
+  <div class="result-container" data-ng-repeat="wine in wines">
+    <div class="left-col-container">
+      <div class="wine" data-ng-include="'views/wine_template.htm'"
+  		  data-ng-data="{{ wine }}" data-ng-click="viewDetails(wine)">
+  		  <!-- TEMPLATE -->
+  	   </div>
+    </div>
+    <div class="right-col-container">
+      <div class="review-container" data-ng-repeat="review in wine.reviews | limitTo:3"
+    	  data-ng-include="'views/review_template.htm'">
+          <!-- TEMPLATE -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="winedetails-container" data-ng-show="wid > 0">
+  <div id="winedetails-inner-container" data-ng-include="'views/winedetails.htm'">
+    <!-- TEMPLATE -->
+  </div>
 </section>
