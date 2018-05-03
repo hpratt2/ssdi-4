@@ -7,10 +7,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.NavigableSet;
 import java.util.Scanner;
 import java.util.TreeMap;
 
 import org.deeplearning4j.text.tokenization.tokenizer.Tokenizer;
+import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.EmbeddedStemmingPreprocessor;
+import org.deeplearning4j.text.tokenization.tokenizer.preprocessor.EndingPreProcessor;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.TokenizerFactory;
 import org.deeplearning4j.text.tokenization.tokenizerfactory.UimaTokenizerFactory;
 
@@ -21,64 +24,43 @@ import winevault.model.IWine;
 import winevault.util.ConnectionDataTestLarge;
 
 public class Corpus {
-	private static final URL DATA_URL = Corpus.class.getResource("data/corpus.txt");
-	private static final String DATA_FILE = "src/main/java/winevault/nlp/data/corpus.txt";
-	private static TreeMap<String,Integer> corpus = null;
-	private static int numDocuments = 0;
+	private static Corpus instance = null; // Singleton
 	
-	private static void build() {
+	// Stored corpus location
+	private static final URL DATA = Corpus.class.getResource("data/corpus.txt");
+	private static final String PATH = "src/main/java/winevault/nlp/data/corpus.txt";
+	
+	// Corpus settings
+	private static final int MIN_TERM_LEN = 4;
+	private static final int MIN_TERM_DOCS = 3;
+	
+	// Instance fields
+	private TreeMap<String,Integer> corpus = null;	// Map of terms -> # documents
+	private static int numDocuments = 0;			// Number of documents in corpus
+	
+	/** Private constructor - maintains only one instance created by the class. */
+	private Corpus() {
+		File storedCorpus = null;
 		try {
-			// Init resources
-			corpus = new TreeMap<String,Integer>();
-			numDocuments = 0;
-			WineDAO wdao = new WineDAO(new ConnectionDataTestLarge());
-			ReviewDAO rdao = new ReviewDAO(new ConnectionDataTestLarge());
-			TokenizerFactory tf = new UimaTokenizerFactory();
-			PrintWriter pw = new PrintWriter(new File(DATA_FILE));
-			List<IWine> wines = wdao.getWineList();
-			// Build the corpus
-			for(IWine wine : wines) {
-				List<IReview> reviews = rdao.getReviewsByWineID(wine.getID());
-				List<String> words = new ArrayList<String>();
-				for(IReview review : reviews) {
-					String content = review.getContent();
-					Tokenizer tok = tf.create(content);
-					while(tok.hasMoreTokens()) {
-						String str = tok.nextToken();
-						if(!words.contains(str))
-							words.add(str);
-					}
-				}
-				// Add document tokens to corpus & update number of documents
-				// which contain the token
-				for(String word : words) {
-					if(corpus.containsKey(word))
-						corpus.replace(word, corpus.get(word) + 1);
-					else
-						corpus.put(word, 1);
-				}
-				numDocuments++;
-			}
-			pw.println(numDocuments);
-			// Write corpus to file
-			String[] keys = corpus.keySet().toArray(new String[0]);
-			Arrays.sort(keys);
-			for(String k : keys) {
-				if(k.length() < 2 || corpus.get(k) < 2) continue;
-				pw.println(k + "\t" + corpus.get(k));
-			}
-			pw.close();
+			storedCorpus = new File(DATA.getFile());
 		} catch(Exception e) {
-			e.printStackTrace();
+			storedCorpus = new File(PATH);
 		}
+		
+		if(storedCorpus.exists() && !storedCorpus.isDirectory())
+			loadStoredCorpus();
+		else
+			buildStoredCorpus();
 	}
 	
-	private static void load() {
+	/** Loads the corpus from file. */
+	private void loadStoredCorpus() {
 		try {
 			corpus = new TreeMap<String,Integer>();
-			Scanner fs = new Scanner(new FileInputStream(DATA_URL.getFile()), "UTF-8");
+			Scanner fs = new Scanner(new FileInputStream(DATA.getFile()),"UTF-8");
 			if(!fs.hasNextLine()) {
-				System.out.println("ERROR READING FILE");
+				System.out.println("ERROR READING CORPUS FILE");
+				corpus = null;
 				fs.close();
 				return;
 			}
@@ -93,40 +75,103 @@ public class Corpus {
 		}
 	}
 	
-	private static void checkInit() {
-		if(corpus == null) {
-			File corpusFile = new File(DATA_URL.getFile());
-			if(corpusFile.exists() && !corpusFile.isDirectory())
-				load();
-			else
-				build();
+	/** Builds a corpus from the existing wines in the database and their aggregated
+	 * reviews; i.e. all reviews corresponding to a given wine constitute a document.
+	 * The corpus is saved to be loaded in future instantiations. */
+	private void buildStoredCorpus() {
+		try {
+			System.out.println("Building Corpus");
+			corpus = new TreeMap<String,Integer>();
+			numDocuments = 0;
+			// Required DAOs
+			WineDAO winedao = new WineDAO(new ConnectionDataTestLarge());
+			ReviewDAO reviewdao = new ReviewDAO(new ConnectionDataTestLarge());
+			// Tokenization and pre-processing utilities
+			TokenizerFactory tf = new UimaTokenizerFactory();
+			EmbeddedStemmingPreprocessor pp = new EmbeddedStemmingPreprocessor(
+					new EndingPreProcessor());
+			// Output
+			File out = new File(PATH);
+			
+			PrintWriter pw = new PrintWriter(out);
+			
+			for(IWine wine : winedao.getWineList()) {
+				// Create document corpus
+				List<String> terms = new ArrayList<String>();
+				for(IReview review : reviewdao.getReviewsByWineID(wine.getID())) {
+					Tokenizer tokenizer = tf.create(review.getContent().toLowerCase());
+					while(tokenizer.hasMoreTokens()) {
+						String token = tokenizer.nextToken();
+						token = pp.preProcess(token);
+						if(!terms.contains(token)) terms.add(token);
+					}
+				}
+				// Add document corpus to aggregated corpus
+				for(String term : terms) {
+					if(term.length() < 2) continue;
+					if(corpus.containsKey(term))
+						corpus.replace(term, corpus.get(term) + 1);
+					else
+						corpus.put(term, 1);
+				}
+				numDocuments++;
+				System.out.print(".");
+			}
+			System.out.println();
+			
+			// Save the corpus
+			pw.println(numDocuments);
+			String[] corpusTerms = corpus.keySet().toArray(new String[corpus.size()]);
+			Arrays.sort(corpusTerms);
+			for(String term : corpusTerms) {
+				int documentsContainingTerm = corpus.get(term);
+				if(term.length() < MIN_TERM_LEN || documentsContainingTerm < MIN_TERM_DOCS) continue;
+				pw.println(term + "\t" + documentsContainingTerm);
+			}
+			pw.close();
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
-	public static TreeMap<String,Integer> get() {
-		checkInit();
-		return corpus;
-	}
+	/** Returns whether this corpus contains the given term.
+	 * @param term the term to check for
+	 * @return true if the term is contained in the corpus, false otherwise */
+	public boolean contains(String term) { return corpus.containsKey(term); }
 	
-	public static boolean contains(String key) {
-		checkInit();
-		return corpus.containsKey(key);
-	}
-	
-	public static int documentsContaining(String key) {
-		checkInit();
-		if(corpus.containsKey(key))
-			return corpus.get(key);
+	/** Returns the number of documents in the corpus containing the given term.
+	 * @param term the term to check for
+	 * @return the number of documents in the corpus containing the given term
+	 */
+	public int documentsContaining(String term) {
+		if(corpus.containsKey(term)) return corpus.get(term);
 		return 0;
 	}
 	
-	public static int size() {
-		checkInit();
-		return corpus.size();
+	public NavigableSet<String> terms() { return corpus.navigableKeySet(); }
+	
+	/** Returns the number of terms contained in the corpus.
+	 * @return the number of terms contained in the corpus */
+	public int numTerms() { return corpus.size(); }
+	
+	
+	/** Returns the number of documents contained in the corpus.
+	 * @return the number of documents contained in the corpus */
+	public int documents() { return numDocuments; }
+	
+	/** Returns the singleton Corpus of this class. If it has not been instantiated, the 
+	 * instance is created and then returned.
+	 * @return the singleton Corpus of this class */
+	public static Corpus getInstance() {
+		if(instance == null) instance = new Corpus();
+		return instance;
 	}
 	
-	public static int N() {
-		checkInit();
-		return numDocuments;
+	/** Builds corpus. Should be used before running web application as relative paths
+	 * are unreliable in this context. */
+	public static void main(String[]args) {
+		Corpus c = new Corpus();
+		System.out.println("Corpus built with " + 
+				c.documents() + " documents and " + c.numTerms() + " terms.");
 	}
 }
