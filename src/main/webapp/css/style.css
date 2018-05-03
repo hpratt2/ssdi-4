@@ -89,14 +89,14 @@ b {
 }
 
 ::-webkit-scrollbar {
-	width: 3em;
+	width: 1.5em;
 	height: 1em;
 }
 
 ::-webkit-scrollbar-thumb {
     height: 1em;
-    border-left: 2em solid rgba(0, 0, 0, 0);
-    border-right: 0.5em solid rgba(0,0,0,0);
+    border-left: .75em solid rgba(0, 0, 0, 0);
+    border-right: 0.25em solid rgba(0,0,0,0);
     border-top: 0.5em solid rgba(0,0,0,0);
     border-bottom: 0.5em solid rgba(0,0,0,0);
     background-clip: padding-box;
@@ -160,7 +160,7 @@ header {
 	margin: 0 0 4em 0;
 }
 
-header > #logo {
+#logo {
 	margin: 0 1em;
 	width: 25em;
 }
@@ -427,7 +427,7 @@ header > #logo {
 }
 
 .section-details {
-	margin: 0 2em;
+	margin: 0 2em 1em 2em;
 	padding: 0 0.5em;
 	display: flex;
 	flex-flow: row nowrap;

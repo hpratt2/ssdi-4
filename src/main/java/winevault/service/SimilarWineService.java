@@ -89,9 +89,10 @@ public class SimilarWineService {
 		
 		double[] scores = new double[wines.size()];
 		for(int i = 0; i < wines.size(); i++) {
-			System.out.println("computing similarity of " + wines.get(i).getID());
+			System.out.print("computing similarity of " + wines.get(i).getID());
 			BagOfWords bag = getWineBagOfWords(wines.get(i));
 			scores[i] = wineBag.similarityTo(bag);
+			System.out.println(" -> " + scores[i]);
 		}
 		
 		while(similarWines.size() < 5) {
