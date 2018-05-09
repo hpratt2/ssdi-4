@@ -1,0 +1,59 @@
+<section class="section-header">
+    <span class="large-caps-left">WHAT'S THE</span>
+    <span class="script-lrg">right wine</span>
+    <span class="large-caps-right">FOR YOU?</span>
+</section>
+
+<div class="form-container" data-ng-controller="autoCompleteController as ctrl">
+    <section class="search-likes-container">
+      <md-content>
+          <h1>Wines you like</h1>
+          <md-chips ng-model="ctrl.selectedLikes" md-autocomplete-snap=""
+              md-transform-chip="ctrl.transformChip($chip)"
+              md-require-match="ctrl.requireMatch"
+              md-max-chips="3">
+              <md-autocomplete md-selected-item="ctrl.selectedLike"
+                  md-search-text="ctrl.searchLikeText"
+                  md-items="wine in ctrl.querySearch(ctrl.searchLikeText)"
+                  md-item-text="wine.name"
+                  placeholder="select a wine"
+                  data-ng-hide="ctrl.selectedLikes.length > 2">
+                  <span md-highlight-text="ctrl.searchLikeText">{{ wine.name }}</span>
+              </md-autocomplete>
+              <md-chip-template>
+                  <span class="selected-wine">{{ $chip.name }}</span>
+              </md-chip-template>
+          </md-chips>
+      </md-content>
+    </section>
+    <section class="search-dislikes-container">
+      <md-content>
+          <h1>Wines you don't like</h1>
+          <md-chips ng-model="ctrl.selectedDislikes" md-autocomplete-snap=""
+              md-transform-chip="ctrl.transformChip($chip)"
+              md-require-match="ctrl.requireMatch"
+              md-max-chips="3">
+              <md-autocomplete md-selected-item="ctrl.selectedDislike"
+                  md-search-text="ctrl.searchDislikeText"
+                  md-items="wine in ctrl.querySearch(ctrl.searchDislikeText)"
+                  md-item-text="wine.name"
+                  placeholder="select a wine"
+                  data-ng-hide="ctrl.selectedDislikes.length > 2">
+                  <span md-highlight-text="ctrl.searchDislikeText">{{ wine.name }}</span>
+              </md-autocomplete>
+              <md-chip-template>
+                  <span class="selected-wine">{{ $chip.name }}</span>
+              </md-chip-template>
+          </md-chips>
+      </md-content>
+    </section>
+    <section class="search-description-container">
+        <h1>Describe what you like in a wine</h1>
+        <textarea ng-model="ctrl.description" placeholder="Enter a description..."></textarea>
+    </section>
+    <section class="search-submit-container">
+        <input type="button"
+            class="search-submit" value="find my wine" data-ng-click="submit()"
+            data-ng-disabled="ctrl.selectedLikes.length < 1 && ctrl.selectedDislikes.length < 1 && !ctrl.description">
+    </section>
+</div>

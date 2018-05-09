@@ -68,20 +68,25 @@
 }
 
 * {
-	margin: 0;
-	border: 0;
-	padding: 0;
 	font-family: "Lato-Regular";
 	font-size: 1em;
 }
 
+html, body {
+	min-height: 0px !important;
+	height: calc(100% - 4em) !important;
+}
+
 body {
-	min-width: 25em;
-	padding: 2em 8em;
+	margin: 1em !important;
+	padding: 2em 8em !important;
+	min-width: 25em !important;
 	background-color: #fbfbfb;
 	color: #19171c;
+	/*
 	display: flex;
 	flex-flow: column nowrap;
+	*/
 }
 
 b {
@@ -111,6 +116,74 @@ b {
 
 ::-webkit-scrollbar-corner {
     background-color: transparent;
+}
+
+.form-container h1 {
+	font-family: "Lato-Regular";
+	font-weight: normal;
+	font-size: 1.1em;
+	margin-bottom: 1em;
+}
+
+md-content {
+	display: flex !important;
+	flex-flow: column nowrap;
+	background-color: transparent;
+}
+
+.selected-wine {
+	padding: 1em 1em 1em 0em;
+}
+
+.md-chips .md-chip-input-container input {
+	background-color: #fff !important;
+	border: 1px solid #ccc !important;
+	border-radius: 3px !important;
+	padding-left: 1em !important;
+}
+
+.search-likes-container, .search-dislikes-container, .search-description-container {
+	margin-bottom: 2em;
+}
+
+.search-description-container {
+	display: flex;
+	flex-flow: column nowrap;
+}
+
+.search-submit-container {
+	display: flex;
+	flex-flow: row nowrap;
+}
+
+.search-submit {
+	padding: 0.5em 2em;
+	color: #fff;
+	background-color: #a0a0bd;
+	border: 1px solid #9090be;
+}
+
+.search-submit:disabled {
+	color: #777;
+	background-color: #ccc;
+	border: 1px solid #bbb;
+}
+
+.search-submit:hover:enabled {
+	background-color: #8282bf;
+}
+
+textarea {
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	padding: 0.5em;
+	height: 8em;
+}
+
+#description-container {
+	position: absolute;
+	top: 50%;
 }
 
 button {
@@ -158,11 +231,35 @@ select, input {
 
 header {
 	margin: 0 0 4em 0;
+	display: flex;
+	flex-flow: row no-wrap;
+	justify-content: space-between;
+	align-items: center;
 }
 
 #logo {
-	margin: 0 1em;
-	width: 25em;
+    margin: 0 1em;
+    width: 25em;
+}
+
+#advanced-search-button {
+	height: 2.75em;
+	padding: 0.25em 0.75em 0 0.75em;
+	border-radius: 3px;
+	border: 1px solid #9090be;
+	background-color: #a0a0bd;
+	color: #fff;
+}
+
+#advanced-search-button:hover {
+	background-color: #8282bf;
+	cursor: pointer;
+}
+
+.script-med {
+    font-family: "DancingScript-Regular";
+    font-size: 2em;
+    margin: 0 0.1em;
 }
 
 #filter-sort-container {
@@ -563,6 +660,15 @@ header {
 	text-align: left;
 }
 
+.large-caps-middle{
+	display: block;
+	font-family: "Lato-Regular";
+	font-size: 1em;
+	padding: 0 1em;
+	text-transform: uppercase;
+	text-align: center;
+}
+
 .script-lrg {
 	font-family: "DancingScript-Bold";
 	font-size: 3em;
@@ -591,6 +697,29 @@ header {
 	min-width: 25em;
 	margin-top: 1em;
 }
+
+
+.text-input-buttons{
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+}
+
+.wine-preferences-container{
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+}
+
+.add-remove {
+	font-family: "Lato-Heavy";
+	font-size: 1.25em;
+	margin: 0.25em;
+	padding: 0.25em;
+	width: 2em;
+	height: 2em;
+}
+
 
 @media only screen and (max-width: 1200px){
 	.result-container{

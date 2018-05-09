@@ -1,17 +1,26 @@
 package winevault.api;
 
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+
 import winevault.model.IReview;
 import winevault.model.IWine;
+import winevault.model.UserPreferences;
 import winevault.service.*;
 
 @Path("/")
@@ -49,5 +58,14 @@ public class IndexController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<IWine> getSimilarWines(@PathParam("id") int id){
 		return similarWineService.getSimilarWine(wineService.getWineByID(id));
+	}
+	
+	@POST
+	@Path("/advsimilarwine")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<IWine> getSimilarWinesAdv(String prefsString){
+		Gson gson = new Gson();
+		UserPreferences prefs = gson.fromJson(prefsString, UserPreferences.class);
+		return similarWineService.getSimilarWine(prefs);
 	}
 }

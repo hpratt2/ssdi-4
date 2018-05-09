@@ -1,5 +1,8 @@
+/* GLOBALS - lazy passing between controllers */
+var wineResults = [];
+
 /* APP */
-var app = angular.module('winevault',['ngRoute']);
+var app = angular.module('winevault',['ngRoute','ngMaterial']);
 
 /* ROUTE CONFIGURATION */
 app.config(function($routeProvider){
@@ -14,7 +17,11 @@ app.config(function($routeProvider){
 		})
 		.when('/advancedsearch/', {
 			templateUrl: 'views/advancedsearch.htm',
-			controller: 'advSearchCtrl'
+			controller: 'autoCompleteController'
+		})
+		.when('/advsimilarwine/', {
+			templateUrl: 'views/advancedresults.htm',
+			controller: 'similarWineCtrl'
 		})
 		.otherwise({
 			redirectTo: '/'
@@ -57,6 +64,11 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams){
 	/* function to go to similar wines page */
 	$scope.findSimilarWines = function(id){
 		$location.path('similarwine/' + id);
+	}
+	
+	/* function to go to advanced search page */
+	$scope.advancedSearch = function(){
+		$location.path('advancedsearch/');
 	}
 	
 	/* fetch the wines from the back-end */
@@ -106,17 +118,97 @@ app.controller('similarWineCtrl', function($scope, $http, $routeParams, $locatio
 	}
 	
 	var url = $location.path().split('/');
-	$http.get('rest/wine/' + url[2]).then(function(response){
-		$scope.basewine = response.data;
-	});
-	$http.get('rest/similarwine/' + url[2]).then(function(response){
-		$scope.wines = response.data;
-		for(let wine of $scope.wines){
-			$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
-				wine.reviews = reviewResponse.data;
+	if(url[2]){
+		$http.get('rest/wine/' + url[2]).then(function(response){
+			$scope.basewine = response.data;
+		});
+		$http.get('rest/similarwine/' + url[2]).then(function(response){
+			$scope.wines = response.data;
+		});
+	}else{
+		$scope.wines = wineResults;
+	}
+	
+	for(let wine of $scope.wines){
+		$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
+			wine.reviews = reviewResponse.data;
+		});
+	}
+});
+
+/* ADVANCED SEARCH CONTROLLER */
+
+app.controller('autoCompleteController', function($scope, $http, $location, $timeout, $q, $log){
+	var self = this;
+	// settings
+	self.requireMatch = true;
+	
+	// init
+	self.searchLikeText = null;
+	self.searchDislikeText = null;
+	
+	self.querySearch = querySearch;
+	self.wines = [];
+	getWineList().then(function(value){	self.wines = value;	});
+	
+	self.selectedLikes = [];
+	self.selectedDislikes = [];
+	self.description = "";
+	
+	self.selectedLike = null;
+	self.selectedDislike = null;
+	
+	/* fetch the wines from the back-end */
+	function getWineList(){
+		return $http.get('rest/winelist').then(function(response, list){
+			$scope.status = response.status;
+			return response.data.sort(function(a,b){
+				if(a.name < b.name) return -1;
+				if(a.name > b.name) return 1;
+				return 0;
 			});
-		}
-	});
+		});
+	}
+	
+	/* search for a wine */
+	function querySearch(query){
+		var results = query ? self.wines.filter(wineNameFilter(query)) : self.wines;
+		return results;
+	}
+	
+	function wineNameFilter(name){
+		var lowercaseName = angular.lowercase(name);
+		return function filterFunc(wine){
+			var winename = angular.lowercase(wine.name);
+			return winename.indexOf(lowercaseName) === 0;
+		};
+	}
+	
+	/* return chip obj when append is called */
+	function transformChip(chip){
+		if(angular.isObject(chip)){ return chip; }
+		return {name: chip, type: 'new'};
+	}
+	
+	/* submit the form */
+	$scope.submit = function(){
+		wineResults = [];
+		$http({
+			method: 'POST',
+			url: 'rest/advsimilarwine',
+			data: {
+				'likes': self.selectedLikes,
+				'dislikes': self.selectedDislikes,
+				'description': self.description
+			},
+			headers: {'Content-Type':'application/json'}
+		}).then(function(data, status, headers, config){
+			wineResults = data.data;
+			$location.path('advsimilarwine/');
+		}, function(data, status, headers, config){
+			console.log(status);
+		});
+	};
 });
 
 /* FILTERS */
@@ -174,3 +266,4 @@ function existsInSet(set, fieldname, value){
 		return item[fieldname] === value;
 	});
 }
+

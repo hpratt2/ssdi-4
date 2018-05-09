@@ -94,6 +94,9 @@ public class BagOfWords {
 			normU += u[i] * u[i];
 			normV += v[i] * v[i];
 		}
+		
+		if(dot == 0 || normU == 0 || normV == 0) return 0;
+		
 		return dot / Math.sqrt(normU * normV);
 	}
 }

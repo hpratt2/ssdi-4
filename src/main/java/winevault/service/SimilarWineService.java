@@ -11,6 +11,8 @@ import winevault.dao.ReviewDAO;
 import winevault.dao.WineDAO;
 import winevault.model.IReview;
 import winevault.model.IWine;
+import winevault.model.UserPreferences;
+import winevault.model.Wine;
 import winevault.nlp.BagOfWords;
 import winevault.util.ConnectionDataTestLarge;
 
@@ -18,49 +20,72 @@ public class SimilarWineService {
 	private IWineDAO winedao = new WineDAO(new ConnectionDataTestLarge());
 	private IReviewDAO reviewdao = new ReviewDAO(new ConnectionDataTestLarge());
 	
-	public List<IWine> getSimilarWine(List<IWine> likes, List<IWine> dislikes, String description){
+	public List<IWine> getSimilarWine(UserPreferences prefs){
+		for(Wine w : prefs.getLikes()) System.out.println(w.getName());
+		return getSimilarWine(prefs.getLikes(), prefs.getDislikes(), prefs.getDescription());
+	}
+	
+	public List<IWine> getSimilarWine(List<Wine> likes, List<Wine> dislikes, String description){
 		List<IWine> similarWines = new ArrayList<IWine>();
 		
 		List<IWine> wines = winedao.getWineList();
 		Map<Integer,BagOfWords> wineBags = getWineBagOfWords();
 		
 		BagOfWords userWants = new BagOfWords();
-		userWants.add(description);
-		for(IWine likedWine : likes) {
-			// Update bag of words representation of user likes
-			List<IReview> reviews = reviewdao.getReviewsByWineID(likedWine.getID());
-			for(IReview review : reviews) userWants.add(review.getContent());
-		}
-		
 		BagOfWords userDoesntWant = new BagOfWords();
-		for(IWine dislikedWine : dislikes) {
-			// Update bag of words representation of user likes
-			List<IReview> reviews = reviewdao.getReviewsByWineID(dislikedWine.getID());
-			for(IReview review : reviews) userDoesntWant.add(review.getContent());
-		}
 		
-		// Remove wines user has tried and liked
-		for(IWine wine : wines) {
+		if(description != null && !description.isEmpty())
+			userWants.add(description);
+		
+		if(likes != null && !likes.isEmpty()) {
 			for(IWine likedWine : likes) {
-				if(wine.equals(likedWine)) wines.remove(wine);
+				// Update bag of words representation of user like
+				List<IReview> reviews = reviewdao.getReviewsByWineID(likedWine.getID());
+				int i = 0;
+				for(IReview review : reviews) {
+					userWants.add(review.getContent());
+				}
+			}
+			
+			// Remove wines user has tried and liked
+			for(IWine likedWine : likes) {
+				for(IWine wine : wines) {
+					if(wine.equals(likedWine)) { 
+						wines.remove(wine);
+						break;
+					}
+				}
 			}
 		}
 		
-		// Remove wines user has tried and disliked
-		for(IWine wine : wines) {
+		System.out.println("Building bag of words for disliked wine...");
+		if(dislikes != null && !dislikes.isEmpty()) {
 			for(IWine dislikedWine : dislikes) {
-				if(wine.equals(dislikedWine)) wines.remove(wine);
+				// Update bag of words representation of user likes
+				List<IReview> reviews = reviewdao.getReviewsByWineID(dislikedWine.getID());
+				for(IReview review : reviews) userDoesntWant.add(review.getContent());
+			}
+			
+			// Remove wines user has tried and disliked
+			for(IWine dislikedWine : dislikes) {
+				for(IWine wine : wines) {
+					if(wine.equals(dislikedWine)) {
+						wines.remove(wine);
+						break;
+					}
+				}
 			}
 		}
-		
 		if(wines.size() < 5) return wines;
 		
 		// Score wines and get top 5
+		System.out.println("Comparing preferences to wines...");
 		double[] scores = new double[wines.size()];
 		for(int i = 0; i < wines.size(); i++) {
 			IWine wine = wines.get(i);
 			BagOfWords bag = wineBags.get(wine.getID());
 			scores[i] = userWants.similarityTo(bag) - userDoesntWant.similarityTo(bag);
+			System.out.println(wine.getID() + " -> " + scores[i]);
 		}
 		
 		// Get top 5 scoring wines
