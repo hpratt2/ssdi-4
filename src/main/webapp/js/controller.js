@@ -105,6 +105,10 @@ app.controller('mainCtrl', function($scope, $http, $location, $routeParams){
 
 /* SIMILAR WINE CONTROLLER */
 app.controller('similarWineCtrl', function($scope, $http, $routeParams, $location){
+	
+	$scope.basewine = null;
+	$scope.wines = [];
+	
 	/* function to update wine details view based on wine id */
 	$scope.viewDetails = function(wine){
 		if(wine == 0){ $scope.currentWine = null; $scope.wid = 0; return; }
@@ -121,18 +125,23 @@ app.controller('similarWineCtrl', function($scope, $http, $routeParams, $locatio
 	if(url[2]){
 		$http.get('rest/wine/' + url[2]).then(function(response){
 			$scope.basewine = response.data;
+			$scope.currentWine = null; $scope.wid = 0;
 		});
 		$http.get('rest/similarwine/' + url[2]).then(function(response){
 			$scope.wines = response.data;
+			for(let wine of $scope.wines){
+				$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
+					wine.reviews = reviewResponse.data;
+				});
+			}
 		});
 	}else{
 		$scope.wines = wineResults;
-	}
-	
-	for(let wine of $scope.wines){
-		$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
-			wine.reviews = reviewResponse.data;
-		});
+		for(let wine of $scope.wines){
+			$http.get('rest/reviews/' + wine.id).then(function(reviewResponse){
+				wine.reviews = reviewResponse.data;
+			});
+		}
 	}
 });
 

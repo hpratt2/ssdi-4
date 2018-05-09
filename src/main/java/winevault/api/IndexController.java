@@ -1,12 +1,8 @@
 package winevault.api;
 
-import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -16,7 +12,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 
 import winevault.model.IReview;
 import winevault.model.IWine;

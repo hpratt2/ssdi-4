@@ -41,7 +41,6 @@ public class SimilarWineService {
 			for(IWine likedWine : likes) {
 				// Update bag of words representation of user like
 				List<IReview> reviews = reviewdao.getReviewsByWineID(likedWine.getID());
-				int i = 0;
 				for(IReview review : reviews) {
 					userWants.add(review.getContent());
 				}
